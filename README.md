@@ -3,6 +3,9 @@
 팀 소개: 슬기로운 아픈 생활 😵 🤒 아픔을 웃을 수 있는 우리는 일류다!
 팀원 : Robin, Tree, Rano, Json, Hong, ZG
 
+브랜치 전략: https://github.com/malaheaven/issue-tracker/wiki/%EB%B8%8C%EB%9E%9C%EC%B9%98-%EC%A0%84%EB%9E%B5
+mockup api docs: https://documenter.getpostman.com/view/8052286/TzY7cDPK
+
 ## BE
 배포 주소: ec2-52-79-56-138.ap-northeast-2.compute.amazonaws.com
 

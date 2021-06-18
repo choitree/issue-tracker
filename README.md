@@ -22,5 +22,5 @@ JSON: 아픈사람 11111111
 ## IOS
 데모 영상: https://github.com/malaheaven/issue-tracker/tree/dev-iOS
 
-HONG: 그냥 아픈 사람 2.5555555555555 +_+. 
+HONG: 그냥 아픈 사람 2.5555555555555 +_+.   
 ZG: 아픈사람 2222222222

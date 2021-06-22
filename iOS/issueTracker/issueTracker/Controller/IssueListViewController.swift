@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 
 class IssueListViewController: UIViewController {
 
@@ -137,6 +138,11 @@ extension IssueListViewController: UITableViewDelegate {
         shareAction.backgroundColor = .systemBlue
         deleteAction.image = UIImage(systemName: ButtonImagesTitle.delete.description)
         return UISwipeActionsConfiguration(actions: [deleteAction, shareAction])
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let NextViewController = UIHostingController(rootView: IssueDetailView(navigationTitle: "이슈 리스트 #\(indexPath.row)"))
+        self.navigationController?.pushViewController(NextViewController, animated: true)
     }
 }
 

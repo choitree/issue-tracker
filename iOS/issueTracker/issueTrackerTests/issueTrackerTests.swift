@@ -70,7 +70,7 @@ class IssueTrackerTests: XCTestCase {
         NetworkManager.requestLocal(with: requestable, type: Issues.self) { result in
             switch result {
             case .success(let data):
-                XCTAssertEqual(data.issues[0].issueId, 0)
+                XCTAssertEqual(data.issues[0].issueId, 1)
                 promise.fulfill()
             case .failure(_):
                 XCTFail("네트워크 접속 오류")

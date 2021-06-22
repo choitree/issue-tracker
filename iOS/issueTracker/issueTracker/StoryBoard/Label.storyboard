@@ -32,10 +32,10 @@
             </objects>
             <point key="canvasLocation" x="-184" y="-370"/>
         </scene>
-        <!--Testing Controller-->
+        <!--Label Controller-->
         <scene sceneID="CYb-60-FMO">
             <objects>
-                <hostingController storyboardIdentifier="Label" id="bfk-25-AlB" customClass="TestingController" customModule="issueTracker" customModuleProvider="target" sceneMemberID="viewController"/>
+                <hostingController storyboardIdentifier="Label" id="bfk-25-AlB" customClass="LabelController" customModule="issueTracker" customModuleProvider="target" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zb6-Mc-Yc3" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="494" y="-370"/>

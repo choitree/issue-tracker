@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1E15AA222670ADB400A573DB /* IssueFilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E15AA212670ADB400A573DB /* IssueFilterViewController.swift */; };
+		1E5BEC1B2681C2650050450A /* LabelListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E5BEC1A2681C2650050450A /* LabelListView.swift */; };
 		1E6FDCD02675F7550007AD2E /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 1E6FDCCF2675F7550007AD2E /* .swiftlint.yml */; };
 		1EB37F30267A3B2C00F30AB8 /* KeyChaineServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EB37F2F267A3B2C00F30AB8 /* KeyChaineServiceTests.swift */; };
 		1EB37F37267A3B9A00F30AB8 /* KeyChainService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EBF208726788945002DB7D5 /* KeyChainService.swift */; };
@@ -41,7 +42,7 @@
 		822E8A58267B0C5800002CF5 /* IssueTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82592123267B07C8004CD19F /* IssueTableViewCell.swift */; };
 		822E8A5A267B36C600002CF5 /* IssueDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 822E8A59267B36C600002CF5 /* IssueDetailView.swift */; };
 		827E6CA72679E4F800FA1832 /* test.json in Resources */ = {isa = PBXBuildFile; fileRef = 827E6CA62679E4F800FA1832 /* test.json */; };
-		828E718F2681A39F0075F097 /* TestingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 828E718E2681A39F0075F097 /* TestingController.swift */; };
+		828E718F2681A39F0075F097 /* LabelListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 828E718E2681A39F0075F097 /* LabelListViewController.swift */; };
 		82A69858266F585100F16D39 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82A69857266F585100F16D39 /* AppDelegate.swift */; };
 		82A6985A266F585100F16D39 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82A69859266F585100F16D39 /* SceneDelegate.swift */; };
 		82A6985C266F585100F16D39 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82A6985B266F585100F16D39 /* LoginViewController.swift */; };
@@ -89,6 +90,7 @@
 		0F44D26BE0044E96A4FAC40F /* Pods-issueTrackerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-issueTrackerTests.release.xcconfig"; path = "Target Support Files/Pods-issueTrackerTests/Pods-issueTrackerTests.release.xcconfig"; sourceTree = "<group>"; };
 		1E15AA212670ADB400A573DB /* IssueFilterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssueFilterViewController.swift; sourceTree = "<group>"; };
 		1E15AA242670B54B00A573DB /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
+		1E5BEC1A2681C2650050450A /* LabelListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelListView.swift; sourceTree = "<group>"; };
 		1E6FDCCF2675F7550007AD2E /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		1EB37F2D267A3B2C00F30AB8 /* KeyChaineServiceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = KeyChaineServiceTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1EB37F2F267A3B2C00F30AB8 /* KeyChaineServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyChaineServiceTests.swift; sourceTree = "<group>"; };
@@ -111,7 +113,7 @@
 		82592124267B07C8004CD19F /* HeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
 		827E6CA62679E4F800FA1832 /* test.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = test.json; sourceTree = "<group>"; };
 		82847A1D267102FD009CFAE6 /* IssueTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssueTableViewCell.swift; sourceTree = "<group>"; };
-		828E718E2681A39F0075F097 /* TestingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestingController.swift; sourceTree = "<group>"; };
+		828E718E2681A39F0075F097 /* LabelListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelListViewController.swift; sourceTree = "<group>"; };
 		82A69854266F585100F16D39 /* issueTracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = issueTracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		82A69857266F585100F16D39 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		82A69859266F585100F16D39 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -178,6 +180,7 @@
 				82592124267B07C8004CD19F /* HeaderView.swift */,
 				82592123267B07C8004CD19F /* IssueTableViewCell.swift */,
 				822E8A59267B36C600002CF5 /* IssueDetailView.swift */,
+				1E5BEC1A2681C2650050450A /* LabelListView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -308,7 +311,7 @@
 				82A698722670A03000F16D39 /* IssueListViewController.swift */,
 				1E15AA212670ADB400A573DB /* IssueFilterViewController.swift */,
 				820550882671F3C700BF8857 /* NewIssueViewController.swift */,
-				828E718E2681A39F0075F097 /* TestingController.swift */,
+				828E718E2681A39F0075F097 /* LabelListViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -633,6 +636,7 @@
 				82A74F5126771B4500F3CCCD /* NetworkManager.swift in Sources */,
 				82F44A62267730AB0010991F /* EndPoint.swift in Sources */,
 				822E8A56267B0C5800002CF5 /* HeaderView.swift in Sources */,
+				1E5BEC1B2681C2650050450A /* LabelListView.swift in Sources */,
 				82A6985C266F585100F16D39 /* LoginViewController.swift in Sources */,
 				82CB7EE32675F1A700B85F98 /* Milestone.swift in Sources */,
 				822E8A5A267B36C600002CF5 /* IssueDetailView.swift in Sources */,
@@ -644,7 +648,7 @@
 				82A6987026707A9700F16D39 /* StoryBoardIdentity.swift in Sources */,
 				82CB7EE52675F1A700B85F98 /* User.swift in Sources */,
 				82CB7EE42675F1A700B85F98 /* SendIssue.swift in Sources */,
-				828E718F2681A39F0075F097 /* TestingController.swift in Sources */,
+				828E718F2681A39F0075F097 /* LabelListViewController.swift in Sources */,
 				82A698732670A03000F16D39 /* IssueListViewController.swift in Sources */,
 				1E15AA222670ADB400A573DB /* IssueFilterViewController.swift in Sources */,
 				82A6985A266F585100F16D39 /* SceneDelegate.swift in Sources */,

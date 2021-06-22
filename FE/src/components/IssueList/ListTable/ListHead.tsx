@@ -45,16 +45,16 @@ const ListHead = ({ data, handleFilterModalClick, ...props }: IIssueListChildren
     if (!milestones || !labels || !users) return;
 
     const usersFilterItems: TIssueListFilterItem[] = users.users.map(
-      ({ userName, profileImage }) => ({ name: userName, imgUrl: profileImage, imgType: 'image'}));
+      ({ userId, userName, profileImage }) => ({ id: userId, name: userName, imgUrl: profileImage, imgType: 'image'}));
     const milestonesFilterItems: TIssueListFilterItem[] =
-      milestones.milestones.map(({ title }) => ({ name: title }));
+      milestones.milestones.map(({ milestoneId, title }) => ({ id: milestoneId, name: title }));
     const labelsFilterItems : TIssueListFilterItem[] = 
-      labels.labels.map(({title, bgColor }) => ({ name: title, color: bgColor, imgType: "color"}));
+      labels.labels.map(({ labelId, title, bgColor }) => ({ id: labelId, name: title, color: bgColor, imgType: "color"}));
 
     const fitlerData : TTextIssueListFilterItems = {
       assignee: {
         title: '담당자 필터',
-        items: [{ name: 'noAssignee', text: '담당자가 없는 이슈' }, ...usersFilterItems],
+        items: [{ id: -1, name: 'noAssignee', text: '담당자가 없는 이슈' }, ...usersFilterItems],
         type: 'assignee',
       },
       writer: {
@@ -64,12 +64,12 @@ const ListHead = ({ data, handleFilterModalClick, ...props }: IIssueListChildren
       },
       milestone: {
         title: '마일스톤 필터',
-        items: [{ name: 'noMilestone', text: '마일스톤이 없는 필터' }, ...milestonesFilterItems],
+        items: [{ id: -1, name: 'noMilestone', text: '마일스톤이 없는 필터' }, ...milestonesFilterItems],
         type: 'milestone',
       },
       label: {
         title: '레이블 필터',
-        items: [{ name: 'noLabel', text: '레이블이 없는 이슈' }, ...labelsFilterItems],
+        items: [{ id: -1, name: 'noLabel', text: '레이블이 없는 이슈' }, ...labelsFilterItems],
         type: 'label',
       }
     };

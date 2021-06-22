@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useRecoilState } from 'recoil';
 import {
   filterVisibleAtom,
-  IFilterVisibleAtom,
+  IFilterVisible,
 } from 'util/store';
 
 import ListTable from './ListTable';
@@ -49,7 +49,7 @@ const IssueList = ( { data } : IIssueList) => {
   // issueList의 모든 modal
   const handleFilterModalClick = useCallback(
     (strType: TFilterTypes) => {
-      setFilterVisibleState((filterVisibleState: IFilterVisibleAtom) => ({
+      setFilterVisibleState((filterVisibleState: IFilterVisible) => ({
         ...filterVisibleState,
         [strType]: !filterVisibleState[strType],
       }));

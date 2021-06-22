@@ -26,7 +26,7 @@ const ListModal = ({ rightPos, data, ...props }: IListModal) => {
 
   const [filterSelectionState, setFilterSelectionState] = useRecoilState(filterSelectionAtom);
 
-  const [arrCurrChecked, setArrCurrChecked] = useState<string[]>([]);
+  const [arrCurrChecked, setArrCurrChecked] = useState<number[]>([]);
   const [isCheckboxUpdate, setIsCheckboxUpdate] = useState(false);
 
   // =========
@@ -46,22 +46,22 @@ const ListModal = ({ rightPos, data, ...props }: IListModal) => {
     const clickCheckboxForTypeLabel = (checked: boolean) => {
       if (checked)
         setArrCurrChecked((arrCurrChecked) => {
-          let newArr: string[] = [];
-          if (arrCurrChecked.includes('noLabel'))
-            newArr = [...arrCurrChecked.filter((name) => name !== 'noLabel'), target.name];
+          let newArr: number[] = [];
+          if (arrCurrChecked.includes(-1))
+            newArr = [...arrCurrChecked.filter((id) => id !== -1), Number(target.id)];
           else
-            target.name === 'noLabel'
-              ? (newArr = [target.name])
-              : (newArr = arrCurrChecked.concat(target.name));
+            target.id === '-1'
+              ? (newArr = [Number(target.id)])
+              : (newArr = arrCurrChecked.concat(Number(target.id)));
           return newArr;
         })
-      else setArrCurrChecked(arrCurrChecked.filter((name) => name !== target.name));
+      else setArrCurrChecked(arrCurrChecked.filter((id) => id !== Number(target.id)));
     }
 
     if (type === 'label') clickCheckboxForTypeLabel(target.checked)
     else {
       target.checked
-        ? setArrCurrChecked([target.name])
+        ? setArrCurrChecked([Number(target.id)])
         : setArrCurrChecked([]);
     }
     setIsCheckboxUpdate(true);
@@ -69,8 +69,8 @@ const ListModal = ({ rightPos, data, ...props }: IListModal) => {
 
   const renderItems = useCallback(
     () =>
-      items.map(({ imgType, name, text, color, imgUrl }, idx) => (
-        <MenuLabelTag key={idx}>
+      items.map(({ id, imgType, name, text, color, imgUrl }) => (
+        <MenuLabelTag key={id}>
           <MenuTextBlock>
             {imgType !== 'text' && (color || imgUrl) && (
               <MenuImageBlock imgType={imgType} color={color} imgUrl={imgUrl} />
@@ -80,9 +80,10 @@ const ListModal = ({ rightPos, data, ...props }: IListModal) => {
           {imgType !== 'text' && (
             <CircleCheckBox
               color="default"
+              id={id}
               name={name}
               onClick={handleCircleCheckboxClick}
-              checked={filterSelectionState[type].includes(name)}
+              checked={filterSelectionState[type].includes(id)}
             />
           )}
         </MenuLabelTag>

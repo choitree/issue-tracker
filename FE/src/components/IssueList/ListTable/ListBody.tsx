@@ -1,19 +1,34 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import { useRecoilValue } from 'recoil';
+
 import { IIssueList } from '..';
 import { IIssuesInfo } from 'util/types';
+import { filterSelectionAtom } from 'util/store/issueList';
+import { isZeroFilterSelection, getFilterLabelData, getFilterMilestoneData, pipe } from 'util/util';
+
 import { Checkbox } from '@material-ui/core';
 import { IconAlertCircle, IconMileStone } from '../../Common/Icons';
 import { FaHashtag } from 'react-icons/fa';
 import Label from '../../Common/Label';
 
+
 const ListBody = ({ data, ...props }: IIssueList) => {
+  const filterSelectionState = useRecoilValue(filterSelectionAtom);
   const [issues, setIssues] = useState<IIssuesInfo>();
+
   useEffect(() => {
     if (!data || !data.issues) return;
-    const issuesData = data?.issues;
-    setIssues(issuesData);
-  }, [data?.issues]);
+    let arrIssues = data.issues.issues;
+    if (!isZeroFilterSelection(filterSelectionState)) {
+      arrIssues = pipe(
+        getFilterLabelData(filterSelectionState['label']),
+        getFilterMilestoneData(filterSelectionState['milestone']),
+      )(arrIssues);
+    }
+
+    setIssues({ issues: arrIssues });
+  }, [data?.issues, filterSelectionState]);
 
   return (
     <ListBodyLayout {...props}>
@@ -37,10 +52,14 @@ const ListBody = ({ data, ...props }: IIssueList) => {
                 </TitleBlock>
                 <InfoBlock>
                   <span className="issue__id">
-                    <FaHashtag />{issue.issueId}
+                    <FaHashtag />
+                    {issue.issueId}
                   </span>
                   {/* 이 이슈가 8분 전, Oni님에 의해 작성되었습니다 */}
-                  <span>이 이슈가 {'몇 초/분 전'}, {issue.history.userName}에 의해 작성되었습니다.</span>
+                  <span>
+                    이 이슈가 {'몇 초/분 전'}, {issue.history.userName}에 의해
+                    작성되었습니다.
+                  </span>
                   <span>
                     <IconMileStone />
                     {issue.milestone.title}
@@ -121,7 +140,9 @@ const InfoBlock = styled.div`
     align-items: center;
     column-gap: 0.4rem;
 
-    &.issue__id { column-gap: 0.1rem };
+    &.issue__id {
+      column-gap: 0.1rem;
+    }
 
     svg {
       fill: currentColor;

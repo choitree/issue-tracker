@@ -35,6 +35,7 @@ interface ITextIssueList {
 }
 
 type TIssueListFilterItem = {
+  id: number;
   name: string;
   text?: string;
   imgType?: TFilterItemType;
@@ -92,25 +93,27 @@ const TextIssueListFilterMock: TTextIssueListFilterItems = {
   search: {
     title: '이슈 필터',
     items: [
-      { name: 'open', text: '열린 이슈' },
-      { name: 'write', text: '내가 작성한 이슈' },
-      { name: 'assign', text: '나에게 할당된 이슈' },
-      { name: 'comment', text: '내가 댓글을 남긴 이슈' },
-      { name: 'close', text: '닫힌 이슈' },
+      { id: 1, name: 'open', text: '열린 이슈' },
+      { id: 2, name: 'write', text: '내가 작성한 이슈' },
+      { id: 3, name: 'assign', text: '나에게 할당된 이슈' },
+      { id: 4, name: 'comment', text: '내가 댓글을 남긴 이슈' },
+      { id: 5, name: 'close', text: '닫힌 이슈' },
     ],
     type: 'search',
   },
   assignee: {
     title: '담당자 필터',
     items: [
-      { name: 'noAssignee', text: '담당자가 없는 이슈' },
+      { id: -1, name: 'noAssignee', text: '담당자가 없는 이슈' },
       {
+        id: 1,
         name: 'Oni',
         text: 'Oni',
         imgUrl: 'https://avatars.githubusercontent.com/u/33610315?s=60&v=4',
         imgType: 'image',
       },
       {
+        id: 2,
         name: 'Daniel',
         text: 'Daniel',
         imgUrl: 'https://avatars.githubusercontent.com/u/33610315?s=60&v=4',
@@ -122,9 +125,10 @@ const TextIssueListFilterMock: TTextIssueListFilterItems = {
   label: {
     title: '레이블 필터',
     items: [
-      { name: 'noLabel', text: '레이블이 없는 이슈' },
-      { name: 'bug', text: 'bug', color: 'red', imgType: 'color' },
+      { id: -1, name: 'noLabel', text: '레이블이 없는 이슈' },
+      { id: 1, name: 'bug', text: 'bug', color: 'red', imgType: 'color' },
       {
+        id: 2,
         name: 'documentation',
         text: 'documentation',
         color: 'blue',
@@ -136,8 +140,8 @@ const TextIssueListFilterMock: TTextIssueListFilterItems = {
   milestone: {
     title: '마일스톤 필터',
     items: [
-      { name: 'noMilestone', text: '마일스톤이 없는 필터' },
-      { name: 'masters', text: '마스터즈 코스' },
+      { id: -1, name: 'noMilestone', text: '마일스톤이 없는 필터' },
+      { id: 1, name: 'masters', text: '마스터즈 코스' },
     ],
     type: 'milestone',
   },
@@ -145,12 +149,14 @@ const TextIssueListFilterMock: TTextIssueListFilterItems = {
     title: '작성자 필터',
     items: [
       {
+        id: 1,
         name: 'Oni',
         text: 'Oni',
         imgUrl: 'https://avatars.githubusercontent.com/u/33610315?s=60&v=4',
         imgType: 'image',
       },
       {
+        id: 2,
         name: 'Daniel',
         text: 'Daniel',
         imgUrl: 'https://avatars.githubusercontent.com/u/33610315?s=60&v=4',

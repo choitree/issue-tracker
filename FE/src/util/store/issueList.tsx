@@ -4,7 +4,7 @@ import { ILabelsInfo, IMilestonesInfo, IUsersInfo, IIssuesInfo, TFilterTypes } f
 
 // 1. Modal 관련
 // 1) ListModal(Filter 모달) Visible 상태
-interface IFilterVisibleAtom {
+interface IFilterVisible {
   search: boolean;
   assignee: boolean;
   label: boolean;
@@ -12,7 +12,7 @@ interface IFilterVisibleAtom {
   writer: boolean;
 }
 
-const filterVisibleAtom = atom<IFilterVisibleAtom>({
+const filterVisibleAtom = atom<IFilterVisible>({
   key: 'filterVisibleAtom',
   default: {
     search: false,
@@ -25,7 +25,7 @@ const filterVisibleAtom = atom<IFilterVisibleAtom>({
 
 // 2) 필터 옵션 선택 상태
 type TFilterSelection = {
-  [filterType in TFilterTypes]: string[];
+  [filterType in TFilterTypes]: number[];
 };
 const filterSelectionAtom = atom<TFilterSelection>({
   key: 'filterSelectionAtom',
@@ -68,4 +68,4 @@ const issuePageDataAtom = atom<TIssuePageData>({
 
 
 export { filterVisibleAtom, issuePageDataAtom, filterSelectionAtom };
-export type { IFilterVisibleAtom };
+export type { IFilterVisible, TFilterSelection };

@@ -32,6 +32,7 @@ interface IUser {
   profileImage: string;
 }
 
+type TIssueTypes = 'contents' | 'history' | 'isOpen' | 'issueId' | 'labels' | 'milestone' | 'title';
 interface IIssue {
   contents: string;
   history: IHistory;
@@ -72,4 +73,5 @@ export type {
   IUser, IUsersInfo,
   IIssue, IIssuesInfo,
   IAllGetRequestDatas,
+  TIssueTypes
 };

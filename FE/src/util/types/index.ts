@@ -5,6 +5,7 @@ import {
   IUser, IUsersInfo,
   IIssue, IIssuesInfo,
   IAllGetRequestDatas,
+  TIssueTypes
 } from './api';
 
 export type {
@@ -18,4 +19,5 @@ export type {
   IUser, IUsersInfo,
   IIssue, IIssuesInfo,
   IAllGetRequestDatas,
+  TIssueTypes
 };

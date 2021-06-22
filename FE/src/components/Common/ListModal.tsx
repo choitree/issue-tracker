@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import styled, { css } from 'styled-components';
 
-import { filterSelectionAtom, filterVisibleAtom } from 'util/store/issueList';
+import { filterSelectionAtom } from 'util/store/issueList';
 import { TIssueListFilterType } from 'util/reference';
 import CircleCheckBox from './CircleCheckBox';
 import Modal from './Modal';
@@ -20,14 +20,11 @@ interface IListModal {
   data?: TIssueListFilterType;
 }
 
-const MODAL_CLOSE_TIME = 200;
-
 const ListModal = ({ rightPos, data, ...props }: IListModal) => {
   // 1. 일반
   const { title, items, type } = data!;
 
   const [filterSelectionState, setFilterSelectionState] = useRecoilState(filterSelectionAtom);
-  const [, setFilterVisibleState] = useRecoilState(filterVisibleAtom);
 
   const [arrCurrChecked, setArrCurrChecked] = useState<string[]>([]);
   const [isCheckboxUpdate, setIsCheckboxUpdate] = useState(false);
@@ -64,10 +61,7 @@ const ListModal = ({ rightPos, data, ...props }: IListModal) => {
     if (type === 'label') clickCheckboxForTypeLabel(target.checked)
     else {
       target.checked
-        ? (
-          setArrCurrChecked([target.name]),
-          setTimeout(() => setFilterVisibleState((filterVisibleState) => ({ ...filterVisibleState, [type]: false })), MODAL_CLOSE_TIME)
-        )
+        ? setArrCurrChecked([target.name])
         : setArrCurrChecked([]);
     }
     setIsCheckboxUpdate(true);

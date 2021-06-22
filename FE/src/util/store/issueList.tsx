@@ -38,6 +38,12 @@ const filterSelectionAtom = atom<TFilterSelection>({
   }
 });
 
+// 3) 체크된 이슈의 id 저장용
+const idOfCheckedIssuesAtom = atom<number[]>({
+  key: 'idOfCheckedIssuesAtom',
+  default: [],
+});
+
 // ===========
 
 // 2. API 관련
@@ -67,5 +73,5 @@ const issuePageDataAtom = atom<TIssuePageData>({
 
 
 
-export { filterVisibleAtom, issuePageDataAtom, filterSelectionAtom };
+export { filterVisibleAtom, issuePageDataAtom, filterSelectionAtom, idOfCheckedIssuesAtom };
 export type { IFilterVisible, TFilterSelection };

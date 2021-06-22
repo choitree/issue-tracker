@@ -1,10 +1,10 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
 import { IIssueList } from '..';
 import { IIssuesInfo } from 'util/types';
-import { filterSelectionAtom } from 'util/store/issueList';
+import { filterSelectionAtom, idOfCheckedIssuesAtom } from 'util/store/issueList';
 import { isZeroFilterSelection, getFilterLabelData, getFilterMilestoneData, pipe } from 'util/util';
 
 import { Checkbox } from '@material-ui/core';
@@ -14,9 +14,12 @@ import Label from '../../Common/Label';
 
 
 const ListBody = ({ data, ...props }: IIssueList) => {
+  // 1. 일반
   const filterSelectionState = useRecoilValue(filterSelectionAtom);
+  const [idOfCheckedIssuesState, setIdOfCheckedIssuesState] = useRecoilState(idOfCheckedIssuesAtom);
   const [issues, setIssues] = useState<IIssuesInfo>();
 
+  // 2. useEffect
   useEffect(() => {
     if (!data || !data.issues) return;
     let arrIssues = data.issues.issues;
@@ -30,6 +33,15 @@ const ListBody = ({ data, ...props }: IIssueList) => {
     setIssues({ issues: arrIssues });
   }, [data?.issues, filterSelectionState]);
 
+  // 3. Events
+  const handleIssueCheckboxClick = useCallback((e : React.MouseEvent | Event) => {
+    const target = e.target as HTMLInputElement;
+    target.checked
+      ? setIdOfCheckedIssuesState(idOfCheckedIssuesState.concat(Number(target.id)))
+      : setIdOfCheckedIssuesState(idOfCheckedIssuesState.filter((id) => id !== Number(target.id)));
+  }, [idOfCheckedIssuesState]);
+
+
   return (
     <ListBodyLayout {...props}>
       {issues &&
@@ -37,7 +49,12 @@ const ListBody = ({ data, ...props }: IIssueList) => {
           <ListBodyRow key={issue.issueId}>
             {/* 좌측 */}
             <ListBodyBlock>
-              <Checkbox color="primary" />
+              <Checkbox
+                color="primary"
+                id={`${issue.issueId}`}
+                onClick={handleIssueCheckboxClick}
+                checked={idOfCheckedIssuesState.includes(issue.issueId)}
+              />
               <TitleInfoBlock>
                 <TitleBlock>
                   <span className="icon">

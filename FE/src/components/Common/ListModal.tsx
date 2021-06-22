@@ -80,7 +80,7 @@ const ListModal = ({ rightPos, data, ...props }: IListModal) => {
           {imgType !== 'text' && (
             <CircleCheckBox
               color="default"
-              id={id}
+              id={`${id}`}
               name={name}
               onClick={handleCircleCheckboxClick}
               checked={filterSelectionState[type].includes(id)}

@@ -62,14 +62,14 @@ const ListModal = ({ rightPos, data, ...props }: IListModal) => {
     }
 
     if (type === 'label') clickCheckboxForTypeLabel(target.checked)
-    else {
-      target.checked
-        ? (
-          setArrCurrChecked([target.name]),
-          setTimeout(() => setFilterVisibleState((filterVisibleState) => ({ ...filterVisibleState, [type]: false })), MODAL_CLOSE_TIME)
-        )
-        : setArrCurrChecked([]);
-    }
+    // else {
+    //   target.checked
+    //     ? (
+    //       setArrCurrChecked([target.name]),
+    //       setTimeout(() => setFilterVisibleState((filterVisibleState) => ({ ...filterVisibleState, [type]: false })), MODAL_CLOSE_TIME)
+    //     )
+    //     : setArrCurrChecked([]);
+    // }
     setIsCheckboxUpdate(true);
   };
 

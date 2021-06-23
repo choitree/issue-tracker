@@ -1,13 +1,15 @@
 import { useState, useEffect } from 'react';
 
 type HTTP_METHODS = 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE' | 'OPTIONS';
+type TFetchHeaders = {
+  'Content-Type': 'application/json' | 'application/x-www-form-urlencoded';
+  Authorization?: string,
+};
 
-interface IFetchOption {
+interface IFetchOptions {
   method: HTTP_METHODS;
-  headers?: {
-    'Content-Type': 'application/json' | 'application/x-www-form-urlencoded';
-  };
-  body?: object;
+  headers?: TFetchHeaders;
+  body?: object | string;
 }
 
 interface IFetchState {
@@ -22,14 +24,17 @@ interface IFetchQuery {
   [key: string]: string;
 }
 
-const createFetchOptions = ({ method, headers, body }: IFetchOption) => {
+const initFetchOptionHeaders : TFetchHeaders = { 'Content-Type': 'application/json' };
+
+const createFetchOptions = ({ method, headers, body }: IFetchOptions) : IFetchOptions =>  {
   const arrMethod: string[] = ['GET', 'POST', 'PATCH', 'PUT', 'DELETE', 'OPTIONS'];
   const isMethod: boolean = arrMethod.findIndex((v) => method === v) > -1;
-  return {
+
+  let result : IFetchOptions = {
     method: isMethod ? method : 'GET',
-    headers: headers || { 'Content-Type': 'application/json' },
-    body: JSON.stringify(body),
+    headers: headers || initFetchOptionHeaders,
   };
+  return !body ? result : { ...result, body: JSON.stringify(body) };
 };
 
 const queryMaker = (url: URL) =>
@@ -44,11 +49,12 @@ const queryMaker = (url: URL) =>
 // useFetch
 interface IuseFetch {
   url: string;
-  options?: IFetchOption;
+  options?: IFetchOptions;
+  checkStates?: any[];  // DependencyList
   checkBeforeFetchExecute?: () => boolean;
 }
 
-function useFetch<T>({ url, options, checkBeforeFetchExecute } : IuseFetch) {
+function useFetch<T>({ url, options, checkStates = [], checkBeforeFetchExecute } : IuseFetch) {
   const urlObjects = new URL(url);
   const initialFetchState: IFetchState = {
     endpoint: urlObjects.host,
@@ -75,13 +81,17 @@ function useFetch<T>({ url, options, checkBeforeFetchExecute } : IuseFetch) {
   };
 
   useEffect(() => {
+    // checkStates가 있고, checkStates내에서 하나라도 falsy한 값이 라면 실행안함.
+    if (checkStates.length > 0 && checkStates.some((v) => !v)) return;
+
     checkBeforeFetchExecute
       ? checkBeforeFetchExecute() && fetchData()
       : fetchData();
-  }, []);
+  }, checkStates);
 
   return { result, fetchState };
 }
 
-export { createFetchOptions };
+export { createFetchOptions, initFetchOptionHeaders };
+export type { TFetchHeaders, IFetchOptions };
 export default useFetch;

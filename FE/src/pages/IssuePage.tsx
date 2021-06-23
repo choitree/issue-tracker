@@ -1,25 +1,43 @@
 import styled from 'styled-components';
-import { useEffect } from 'react';
-import { useRecoilState } from 'recoil';
+import { useState, useEffect, useMemo } from 'react';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
 import LoadingSpinner from '../components/Common/LoadingSpinner';
 import IssueList from '../components/IssueList';
 import { createGetRequestAddress } from '../util/API';
-import useFetch from '../util/hooks/useFetch';
+import useFetch, { createFetchOptions, IFetchOptions } from '../util/hooks/useFetch';
 import { IIssuesInfo, ILabelsInfo, IMilestonesInfo, IUsersInfo } from '../util/types/api';
-import { issuePageDataAtom } from 'util/store';
+import { authHeadersAtom, issuePageDataAtom } from 'util/store';
 
 
 const IssuePage = () => {
+  // 1. 일반
   const [issuePageDataState, setIssuePageDataState] = useRecoilState(issuePageDataAtom);
+  const authHeadersState = useRecoilValue(authHeadersAtom);
+  const [issuePagefetchOptions, setIssuePageFetchOptions] = useState<IFetchOptions | undefined>();
 
-  // useFecth는 Recoil: issuePageDataAtom의 모든 data 값들이 없어야 실행 가능하게 해야하나? (보류)
-  // const checkBeforeFetchExecute = () => (Object.values(issuePageDataState.data).every((value) => !value));
+  // 2. useEffect & useFetch
+  // useFetch에 들어갈 options을 만드는 부분, authHeadersState.isLoading이 false여야 fetch 작동
+  useEffect(() => {
+    if (!authHeadersState || authHeadersState.isLoading) return;
+    setIssuePageFetchOptions(
+      createFetchOptions({ method: 'GET', headers: authHeadersState.headers }),
+    );
+  }, [authHeadersState]);
 
-  const { result: labelsResult, fetchState: { isLoading: labelsIsLoading } } = useFetch<ILabelsInfo>({ url: createGetRequestAddress('labels') });
-  const { result: milestonesResult, fetchState: { isLoading: milestonesIsLoading } } = useFetch<IMilestonesInfo>({ url: createGetRequestAddress('milestones') });
-  const { result: usersResult, fetchState: { isLoading: usersIsLoading } } = useFetch<IUsersInfo>({ url: createGetRequestAddress('users') });
-  const { result: issuesResult, fetchState: { isLoading: issuesIsLoading } } = useFetch<IIssuesInfo>({ url: createGetRequestAddress('issues') });
+  const useFetchParams = useMemo(() => ({
+      options: issuePagefetchOptions,
+      checkStates: [issuePagefetchOptions],
+    }), [issuePagefetchOptions]);
+
+  const { result: labelsResult, fetchState: { isLoading: labelsIsLoading } }
+    = useFetch<ILabelsInfo>({...useFetchParams, url: createGetRequestAddress("labels")});
+  const { result: milestonesResult, fetchState: { isLoading: milestonesIsLoading } }
+    = useFetch<IMilestonesInfo>({...useFetchParams, url: createGetRequestAddress("milestones")});
+  const { result: usersResult, fetchState: { isLoading: usersIsLoading } }
+    = useFetch<IUsersInfo>({...useFetchParams, url: createGetRequestAddress("users")});
+  const { result: issuesResult, fetchState: { isLoading: issuesIsLoading } }
+    = useFetch<IIssuesInfo>({...useFetchParams, url: createGetRequestAddress("issues")});
 
   useEffect(() => {
     const arrLoading = [issuesIsLoading, milestonesIsLoading, labelsIsLoading, usersIsLoading];
@@ -34,7 +52,9 @@ const IssuePage = () => {
         issues: issuesResult,
       },
     });
-  }, [issuesIsLoading, milestonesIsLoading, labelsIsLoading]);
+  }, [issuesIsLoading, milestonesIsLoading, labelsIsLoading, usersIsLoading]);
+
+  // ----
 
   return !issuePageDataState.isLoading ? (
     <IssueList data={issuePageDataState.data} />

@@ -1,4 +1,5 @@
-// https://documenter.getpostman.com/view/8052286/TzY7cDPK
+// POSTMAN: https://documenter.getpostman.com/view/8052286/TzY7cDPK
+// AWS API: http://ec2-52-79-56-138.ap-northeast-2.compute.amazonaws.com
 
 type TGetRequestTypes = 'users' | 'issues' | 'issue' | 'milestones' | 'milestone' | 'labels' | 'label' ;
 type TGetRequestRequiredPaths = { [type in TGetRequestTypes]: boolean };
@@ -14,7 +15,7 @@ const getRequestRequiredPaths: TGetRequestRequiredPaths = {
 };
 
 const END_POINT: string =
-  'https://b3c7d639-cf7e-44e4-bc72-e137dced6a20.mock.pstmn.io/';
+  'http://ec2-52-79-56-138.ap-northeast-2.compute.amazonaws.com';
 
 const createGetRequestAddress = (
   type: TGetRequestTypes,
@@ -32,4 +33,4 @@ const createGetRequestAddress = (
   }
 };
 
-export { createGetRequestAddress };
+export { END_POINT, createGetRequestAddress };

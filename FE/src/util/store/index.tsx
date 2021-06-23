@@ -1,3 +1,4 @@
+import { userDataAtom, authHeadersAtom, IUserData } from './global';
 import {
   filterVisibleAtom,
   issuePageDataAtom,
@@ -8,9 +9,19 @@ import {
 } from './issueList';
 
 export {
+  // global
+  userDataAtom,
+  authHeadersAtom,
+  // issueList
   filterVisibleAtom,
   issuePageDataAtom,
   filterSelectionAtom,
   idOfCheckedIssuesAtom,
 };
-export type { IFilterVisible, TFilterSelection };
+export type {
+  // global
+  IUserData,
+  // issueList
+  IFilterVisible,
+  TFilterSelection,
+};

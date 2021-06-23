@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components';
 import React, { useState, useEffect } from 'react';
 import { useRecoilState } from 'recoil';
-import { filterVisibleAtom, idOfCheckedIssuesAtom } from 'util/store';
+import { filterSelectionAtom, filterVisibleAtom, idOfCheckedIssuesAtom } from 'util/store';
 import { TFilterTypes } from 'util/types';
 
 import { IIssueListChildren } from '..';
@@ -18,14 +18,20 @@ import {
 
 type TIssueOpenOrClose = { open: number, close: number, issueIds: number[], length: number };
 
+// Recoil - filterSelectionState["search"] Update 전용 consts
+const RECOIL_OPEN_ISSUE = 1;
+const RECOIL_CLOSE_ISSUE = 5;
+// --
+
 const ListHead = ({ data, handleFilterModalClick, ...props }: IIssueListChildren) => {
   // 1. 일반 (Recoil 등)
   const { table: { header: { left, right }, } } = TextIssueList;
 
-  const [leftTabsState, setLeftTabsState] = useState(0);
   const [filterVisibleState, setFilterVisibleState] = useRecoilState(filterVisibleAtom);
   const [idOfCheckedIssuesState, setIdOfCheckedIssuesState] = useRecoilState(idOfCheckedIssuesAtom);
+  const [filterSelectionState, setFilterSelectionState] = useRecoilState(filterSelectionAtom);
 
+  const [leftTabsState, setLeftTabsState] = useState<number>(0);
   const [issueOpenOrClose, setIssueOpenOrClose] = useState<TIssueOpenOrClose>({open: 0, close: 0, issueIds: [], length: 0});
   const [issueListFilterData, setIssueListFilterData] = useState<TTextIssueListFilterItems>();
 
@@ -118,9 +124,17 @@ const ListHead = ({ data, handleFilterModalClick, ...props }: IIssueListChildren
 
   // 3. events
 
-  // 1) 열린 / 닫힌 이슈 클릭 (미완)
-  const handleLeftTabsState = (e: React.ChangeEvent<{}>, value: number) =>
+  // 1) 열린 / 닫힌 이슈 클릭
+  const handleLeftTabsState = (e: React.ChangeEvent<{}>, value: number) => {
     setLeftTabsState(value);
+    const isOpen = value === 0; // value: 0(open) | 1(close) : LeftTabs의 Tab의 고유번호
+
+    // [참고] Recoil의 filterSelectionState["search"]를 업데이트해주면 
+      // issue들을 렌더링하는 ListBody 컴포넌트의 pipe에서 필터링함!
+    isOpen
+      ? setFilterSelectionState({ ...filterSelectionState, search: [RECOIL_OPEN_ISSUE] })
+      : setFilterSelectionState({ ...filterSelectionState, search: [RECOIL_CLOSE_ISSUE] });
+  }
 
   // 2) 우측 필터버튼들 (담당자 / 레이블 / 마일스톤 / 작성자 필터) 클릭
   const handleRightBtnsClick = (name: TFilterTypes) => {

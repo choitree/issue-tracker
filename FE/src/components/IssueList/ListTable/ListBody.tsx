@@ -21,15 +21,20 @@ import { FaHashtag } from 'react-icons/fa';
 import Label from '../../Common/Label';
 
 
+const RECOIL_OPEN_ISSUE = 1
+
 const ListBody = ({ data, ...props }: IIssueList) => {
   // 1. 일반
-  const filterSelectionState = useRecoilValue(filterSelectionAtom);
+  const [filterSelectionState, setFilterSelectionState] = useRecoilState(filterSelectionAtom);
   const [idOfCheckedIssuesState, setIdOfCheckedIssuesState] = useRecoilState(idOfCheckedIssuesAtom);
   const userDataState = useRecoilValue(userDataAtom);
 
   const [issues, setIssues] = useState<IIssuesInfo>();
 
   // 2. useEffect
+  // 초기 렌더링엔 Open된 이슈만 보이게 (filterSelectionState 업뎃)
+  useEffect(() => setFilterSelectionState({ ...filterSelectionState, search: [RECOIL_OPEN_ISSUE] }), []);
+
   // ListBody에서 필터링 실행함 (SearchBar 컴포넌트에서 필터버튼 눌러도 여기서!)
   useEffect(() => {
     if (!data || !data.issues) return;
@@ -119,6 +124,9 @@ const ListBodyLayout = styled.div`
   background-color: ${({ theme }) => theme.colors.grayScale.offWhite};
   border-radius: 0px 0px 0.5rem 0.5rem;
   width: inherit;
+
+  display: flex;
+  flex-direction: column-reverse;
 `;
 
 const ListBodyRow = styled.div`
@@ -126,7 +134,9 @@ const ListBodyRow = styled.div`
   justify-content: space-between;
   border-bottom: 1px solid ${({ theme }) => theme.colors.grayScale.line};
   padding: 1.05rem 0;
-  :last-child {
+  :first-child {
+    // 부모 (ListBodyLayout)의 flex-direction이 column-reverse임
+    // 그러므로 눈에 보이는 마지막은 last-child가 아닌 first-child
     border-bottom: none;
   }
 `;

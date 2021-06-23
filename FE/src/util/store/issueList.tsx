@@ -1,5 +1,5 @@
 // issueList (IssuePage)
-import { atom } from 'recoil';
+import { atom, selector } from 'recoil';
 import { ILabelsInfo, IMilestonesInfo, IUsersInfo, IIssuesInfo, TFilterTypes } from 'util/types';
 
 // 1. Modal 관련
@@ -38,6 +38,24 @@ const filterSelectionAtom = atom<TFilterSelection>({
   }
 });
 
+// 2-1) filterSelectionAtom - search: 열린 이슈(id: 1) or 닫힌 이슈(id: 5) 만 있다면 초기 상태 판정.
+const isInitFilterSelectionSelector = selector({
+  key: 'isInitFilterSelectionSelector',
+  get: ({ get }) => {
+    const RECOIL_OPEN_ISSUE = 1, RECOIL_CLOSE_ISSUE = 5;
+    const filterSelectionState = get(filterSelectionAtom);
+    const { assignee, label, milestone, search, writer } = filterSelectionState;
+
+    const isOpenOrClose = search.includes(RECOIL_OPEN_ISSUE) || search.includes(RECOIL_CLOSE_ISSUE);
+    if (!assignee.length && !label.length && !milestone.length && !writer.length && isOpenOrClose) 
+      return true;
+
+    return false
+  },
+});
+
+
+
 // 3) 체크된 이슈의 id 저장용
 const idOfCheckedIssuesAtom = atom<number[]>({
   key: 'idOfCheckedIssuesAtom',
@@ -73,5 +91,11 @@ const issuePageDataAtom = atom<TIssuePageData>({
 
 
 
-export { filterVisibleAtom, issuePageDataAtom, filterSelectionAtom, idOfCheckedIssuesAtom };
+export {
+  filterVisibleAtom,
+  issuePageDataAtom,
+  filterSelectionAtom,
+  isInitFilterSelectionSelector,
+  idOfCheckedIssuesAtom,
+};
 export type { IFilterVisible, TFilterSelection };

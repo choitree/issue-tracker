@@ -3,6 +3,7 @@ import {
   filterVisibleAtom,
   issuePageDataAtom,
   filterSelectionAtom,
+  isInitFilterSelectionSelector,
   idOfCheckedIssuesAtom,
   IFilterVisible,
   TFilterSelection,
@@ -16,6 +17,7 @@ export {
   filterVisibleAtom,
   issuePageDataAtom,
   filterSelectionAtom,
+  isInitFilterSelectionSelector,
   idOfCheckedIssuesAtom,
 };
 export type {

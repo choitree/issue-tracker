@@ -1,7 +1,5 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { useRecoilValue } from 'recoil';
-import { userDataAtom } from 'util/store';
 import useRefreshUserState from 'util/hooks/useRefreshUserState';
 
 import Logo from './Logo';

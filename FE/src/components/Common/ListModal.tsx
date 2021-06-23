@@ -43,7 +43,7 @@ const ListModal = ({ rightPos, data, ...props }: IListModal) => {
     const target = e.target as HTMLInputElement;
 
     // 현재 ListModal의 Type이 레이블(Label)일 경우에만 동작하는 함수
-    const clickCheckboxForTypeLabel = (checked: boolean) => {
+    const checkboxClickForTypeLabelOrAssignee = (checked: boolean) => {
       if (checked)
         setArrCurrChecked((arrCurrChecked) => {
           let newArr: number[] = [];
@@ -58,7 +58,8 @@ const ListModal = ({ rightPos, data, ...props }: IListModal) => {
       else setArrCurrChecked(arrCurrChecked.filter((id) => id !== Number(target.id)));
     }
 
-    if (type === 'label') clickCheckboxForTypeLabel(target.checked)
+    if (type === 'label' || type === 'assignee')
+      checkboxClickForTypeLabelOrAssignee(target.checked)
     else {
       target.checked
         ? setArrCurrChecked([Number(target.id)])

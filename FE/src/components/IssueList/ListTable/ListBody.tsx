@@ -4,8 +4,16 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 
 import { IIssueList } from '..';
 import { IIssuesInfo } from 'util/types';
-import { filterSelectionAtom, idOfCheckedIssuesAtom } from 'util/store/issueList';
-import { isZeroFilterSelection, getFilterLabelData, getFilterMilestoneData, pipe } from 'util/util';
+import { filterSelectionAtom, idOfCheckedIssuesAtom, userDataAtom } from 'util/store';
+import {
+  pipe,
+  isZeroFilterSelection,
+  getFilterLabelData,
+  getFilterMilestoneData,
+  getFilterAssigneeData,
+  getFilterWriterData,
+  getFilterSearchData,
+} from 'util/util';
 
 import { Checkbox } from '@material-ui/core';
 import { IconAlertCircle, IconMileStone } from '../../Common/Icons';
@@ -17,16 +25,23 @@ const ListBody = ({ data, ...props }: IIssueList) => {
   // 1. 일반
   const filterSelectionState = useRecoilValue(filterSelectionAtom);
   const [idOfCheckedIssuesState, setIdOfCheckedIssuesState] = useRecoilState(idOfCheckedIssuesAtom);
+  const userDataState = useRecoilValue(userDataAtom);
+
   const [issues, setIssues] = useState<IIssuesInfo>();
 
   // 2. useEffect
+  // ListBody에서 필터링 실행함 (SearchBar 컴포넌트에서 필터버튼 눌러도 여기서!)
   useEffect(() => {
     if (!data || !data.issues) return;
     let arrIssues = data.issues.issues;
+
     if (!isZeroFilterSelection(filterSelectionState)) {
       arrIssues = pipe(
         getFilterLabelData(filterSelectionState['label']),
         getFilterMilestoneData(filterSelectionState['milestone']),
+        getFilterAssigneeData(filterSelectionState["assignee"]),
+        getFilterWriterData(filterSelectionState["writer"]),
+        getFilterSearchData(filterSelectionState["search"], Number(userDataState.id))
       )(arrIssues);
     }
 

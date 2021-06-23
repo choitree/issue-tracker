@@ -32,8 +32,23 @@ interface IUser {
   profileImage: string;
 }
 
-type TIssueTypes = 'contents' | 'history' | 'isOpen' | 'issueId' | 'labels' | 'milestone' | 'title';
+interface IAssignees extends IUser {};
+interface IAuthor extends IUser {};
+
+interface IComments {
+  author: IAuthor;
+  commentId: number;
+  contents: string;
+  createDateTime: Date;
+}
+
+type TIssueTypes = 'assignees' | 'author' | 'comments' 
+  | 'contents' | 'history' | 'isOpen'
+  | 'issueId' | 'labels' | 'milestone' | 'title';
 interface IIssue {
+  assignees: IAssignees[];
+  author: IAuthor;
+  comments: IComments[];
   contents: string;
   history: IHistory;
   isOpen: boolean;
@@ -70,7 +85,10 @@ interface IAllGetRequestDatas {
 export type {
   ILabel, ILabelsInfo,
   IMilestone, IMilestonesInfo,
-  IUser, IUsersInfo,
+  IUser,
+  IAssignees, IAuthor, // 이 2개. IUser와 같음
+  IUsersInfo,
+  IComments,
   IIssue, IIssuesInfo,
   IAllGetRequestDatas,
   TIssueTypes

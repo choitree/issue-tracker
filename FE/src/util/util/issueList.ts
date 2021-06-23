@@ -1,42 +1,86 @@
-import { TFilterSelection } from "util/store";
-import { IIssue } from "util/types";
+import { TFilterSelection } from 'util/store';
+import { IIssue } from 'util/types';
 
 // 1. IssuesPage Filter 관련 (IssueList -> ListBody 컴포넌트에서 사용)
 // 1) 레이블
-const getFilterLabelData = (arrLabelState: number[]) => (arrIssues: IIssue[]) =>
-  arrLabelState.length > 0
-    ? arrIssues.filter(
-        (issue) =>
-          issue.labels.findIndex((label) =>
-            arrLabelState.includes(label.labelId),
-          ) > -1,
-      )
-    : arrIssues;
+const getFilterLabelData = 
+  (arrLabelValue: number[]) => (arrIssues: IIssue[]) =>
+    arrLabelValue.length > 0
+      ? arrIssues.filter((issue) => {
+          let count = 0;
+          for (let i = 0; i < issue.labels.length; i++) {
+            const isInclude = arrLabelValue.includes(issue.labels[i].labelId);
+            count += Number(isInclude);
+          };
+          return count === arrLabelValue.length;
+        })
+      : arrIssues;
+
 // 2) 마일스톤
 const getFilterMilestoneData =
-  (arrMilestoneState: number[]) => (arrIssues: IIssue[]) =>
-    arrMilestoneState.length > 0
+  (arrMilestoneValue: number[]) => (arrIssues: IIssue[]) =>
+    arrMilestoneValue.length > 0
       ? arrIssues.filter((issue) =>
-          arrMilestoneState.includes(issue.milestone.milestoneId),
+          arrMilestoneValue.includes(issue.milestone.milestoneId),
         )
       : arrIssues;
 
-// [보류] --------------------- START
-// 담당자 / 작성자 관련 데이터, GET - issues에서 찾기 어려움 ====
-// 3) 담당자 --  / 담당자들에 관련한 데이터 어디있는거지?
+// 3) 담당자
+// let initNewIssues: IIssue[] = [];
 const getFilterAssigneeData =
-  (arrIssues: IIssue[]) => (arrAssigneeValue: number[]) => {};
+  (arrAssigneeValue: number[]) => (arrIssues: IIssue[]) =>
+    arrAssigneeValue.length > 0
+      ? arrIssues.filter((issue) => {
+          let count = 0;
+          for (let i = 0; i < issue.assignees.length; i++) {
+            const isInclude = arrAssigneeValue.includes(issue.assignees[i].userId);
+            count += Number(isInclude);
+          };
+          return count === arrAssigneeValue.length;
+        })
+      : arrIssues;
 
 // 4) 작성자
 const getFilterWriterData =
-  (arrIssues: IIssue[]) => (arrWriterValue: number[]) =>
-    arrIssues.filter(
-      (issue) => arrWriterValue.includes(-1), // 보류 (-1 아님. 바꿔야함)
-    );
+  (arrWriterValue: number[]) => (arrIssues: IIssue[]) =>
+    arrWriterValue.length > 0
+      ? arrIssues.filter((issue) =>
+          arrWriterValue.includes(issue.author.userId),
+        )
+      : arrIssues;
 
 // 5) 검색바
-const getFilterSearchData = (arrIssues: IIssue[]) => {};
-// [보류] --------------------- END
+const getFilterSearchData =
+  (arrSearchValue: number[], currUserId : number) => (arrIssues: IIssue[]) =>
+    (arrSearchValue.length > 0 && currUserId && currUserId > 0)
+      ? arrIssues.filter((issue) => {
+          const nSearchId = arrSearchValue[0];
+          let returnValue = false;
+          switch (nSearchId) {
+            // 열린 이슈 (open)
+            case 1: returnValue = issue.isOpen; break;
+            // 내가 작성한 이슈 (write)
+            case 2: returnValue = (issue.author.userId === currUserId); break;
+            // 나에게 할당된 이슈 (assign)
+            case 3: {
+              const assigneeIds = issue.assignees.map((assignee) => assignee.userId);
+              returnValue = assigneeIds.includes(currUserId);
+              break;
+            }
+            // 내가 댓글을 남긴 이슈 (comment)
+            case 4: {
+              const commentsAuthorIdsSet = new Set(issue.comments.map((comment) => comment.author.userId));
+              returnValue = commentsAuthorIdsSet.has(currUserId);
+              break;
+            }
+            // 닫힌 이슈 (close)
+            case 5: returnValue = !(issue.isOpen); break;
+            default: break;
+          }
+
+          return returnValue;
+        })
+      : arrIssues;
 
 // 6) Recoil의 filterSelectionState가 비어있는지 체크
 const isZeroFilterSelection = (
@@ -53,8 +97,8 @@ const isZeroFilterSelection = (
 export {
   getFilterLabelData,
   getFilterMilestoneData,
-  /* getFilterAssigneeData, 
-    getFilterWriterData, 
-    getFilterSearchData, */
+  getFilterAssigneeData,
+  getFilterWriterData,
+  getFilterSearchData,
   isZeroFilterSelection,
 };

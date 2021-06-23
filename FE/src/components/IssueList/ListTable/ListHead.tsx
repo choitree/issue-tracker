@@ -2,26 +2,23 @@ import styled, { css } from 'styled-components';
 import React, { useState, useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 import { filterSelectionAtom, filterVisibleAtom, idOfCheckedIssuesAtom } from 'util/store';
-import { TFilterTypes } from 'util/types';
 
-import { IIssueListChildren } from '..';
-import { Checkbox, Tabs, Tab, Button } from '@material-ui/core';
-import { IconAlertCircle, IconArchive } from '../../Common/Icons';
-import { MdKeyboardArrowDown } from 'react-icons/md';
-import ListModal from '../../Common/ListModal';
+import { RECOIL_CLOSE_ISSUE, RECOIL_OPEN_ISSUE } from 'util/util';
+import { TFilterTypes } from 'util/types';
 import {
   TextIssueList,
   TIssueListFilterItem,
   TTextIssueListFilterItems,
 } from 'util/reference';
+import { IIssueListChildren } from '..';
+
+import { Checkbox, Tabs, Tab, Button } from '@material-ui/core';
+import { IconAlertCircle, IconArchive } from '../../Common/Icons';
+import { MdKeyboardArrowDown } from 'react-icons/md';
+import ListModal from '../../Common/ListModal';
 
 
 type TIssueOpenOrClose = { open: number, close: number, issueIds: number[], length: number };
-
-// Recoil - filterSelectionState["search"] Update 전용 consts
-const RECOIL_OPEN_ISSUE = 1;
-const RECOIL_CLOSE_ISSUE = 5;
-// --
 
 const ListHead = ({ data, handleFilterModalClick, ...props }: IIssueListChildren) => {
   // 1. 일반 (Recoil 등)

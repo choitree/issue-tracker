@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { useRecoilState, useRecoilValue } from 'recoil';
 
 import { IIssueList } from '..';
@@ -13,15 +13,16 @@ import {
   getFilterAssigneeData,
   getFilterWriterData,
   getFilterSearchData,
+  getIssueHistoryFlagText,
+
+  RECOIL_OPEN_ISSUE,
+  calcPastTime,
 } from 'util/util';
 
 import { Checkbox } from '@material-ui/core';
-import { IconAlertCircle, IconMileStone } from '../../Common/Icons';
+import { IconAlertCircle, IconArchive, IconMileStone } from '../../Common/Icons';
 import { FaHashtag } from 'react-icons/fa';
 import Label from '../../Common/Label';
-
-
-const RECOIL_OPEN_ISSUE = 1
 
 const ListBody = ({ data, ...props }: IIssueList) => {
   // 1. 일반
@@ -64,7 +65,7 @@ const ListBody = ({ data, ...props }: IIssueList) => {
 
   return (
     <ListBodyLayout {...props}>
-      {issues &&
+      {issues && issues.issues.length > 0 ? (
         issues.issues.map((issue) => (
           <ListBodyRow key={issue.issueId}>
             {/* 좌측 */}
@@ -78,7 +79,7 @@ const ListBody = ({ data, ...props }: IIssueList) => {
               <TitleInfoBlock>
                 <TitleBlock>
                   <span className="icon">
-                    <IconAlertCircle />
+                    {issue.isOpen ? <IconAlertCircle /> : <IconArchive />}
                   </span>
                   <span className="subject">{issue.title}</span>
                   {issue.labels.map(({ color, bgColor, title, labelId }) => (
@@ -92,10 +93,10 @@ const ListBody = ({ data, ...props }: IIssueList) => {
                     <FaHashtag />
                     {issue.issueId}
                   </span>
-                  {/* 이 이슈가 8분 전, Oni님에 의해 작성되었습니다 */}
                   <span>
-                    이 이슈가 {'몇 초/분 전'}, {issue.history.userName}에 의해
-                    작성되었습니다.
+                    이 이슈가 {calcPastTime(issue.history.historyDateTime)},{' '}
+                    {issue.history.userName}에 의해{' '}
+                    {getIssueHistoryFlagText(issue.history.flag)}
                   </span>
                   <span>
                     <IconMileStone />
@@ -107,18 +108,26 @@ const ListBody = ({ data, ...props }: IIssueList) => {
 
             {/* 우측 */}
             <ListBodyBlock>
-              <AssigneeProfileBlock>
-                <IconAlertCircle /> {/* 유저 이미지 어디갔어.. */}
-              </AssigneeProfileBlock>
+              <WriterBlock>
+                <WriterImageBlock imgUrl={issue.author.profileImage} />
+              </WriterBlock>
             </ListBodyBlock>
           </ListBodyRow>
-        ))}
+        ))
+      ) : (
+        <ListBodyRow isEmpty>
+          <span>등록된 이슈가 없습니다.</span>
+        </ListBodyRow>
+      )}
     </ListBodyLayout>
   );
 };
 export default ListBody;
 
 // --- Styled Components ---
+type TListBodyRow = { isEmpty? : boolean };
+type TWriterImageBlock = { imgUrl: string  };
+
 // 1. 메인 (큰 틀)
 const ListBodyLayout = styled.div`
   background-color: ${({ theme }) => theme.colors.grayScale.offWhite};
@@ -129,9 +138,9 @@ const ListBodyLayout = styled.div`
   flex-direction: column-reverse;
 `;
 
-const ListBodyRow = styled.div`
+const ListBodyRow = styled.div<TListBodyRow>`
   display: flex;
-  justify-content: space-between;
+  justify-content: ${({ isEmpty }) => isEmpty ? 'center' : 'space-between'};
   border-bottom: 1px solid ${({ theme }) => theme.colors.grayScale.line};
   padding: 1.05rem 0;
   :first-child {
@@ -139,6 +148,9 @@ const ListBodyRow = styled.div`
     // 그러므로 눈에 보이는 마지막은 last-child가 아닌 first-child
     border-bottom: none;
   }
+
+  ${({ isEmpty, theme }) => isEmpty && 
+    css`span { color: ${theme.colors.grayScale.label}; padding: 1rem 0; }`}
 `;
 
 const ListBodyBlock = styled.div`
@@ -193,9 +205,20 @@ const InfoBlock = styled.div`
   }
 `;
 
-const AssigneeProfileBlock = styled.div`
+const WriterBlock = styled.div`
   display: flex;
   align-items: center;
   column-gap: 0.4rem;
   margin-right: 3.2rem;
+`;
+
+const WriterImageBlock = styled.div<TWriterImageBlock>`
+  border-radius: 50%;
+  border: 1px solid ${({ theme }) => theme.colors.grayScale.line};
+  min-width: 1.2rem;
+  min-height: 1.2rem;
+  background-position: center center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-image: url(${({ imgUrl }) => imgUrl});
 `;

@@ -94,11 +94,34 @@ const isZeroFilterSelection = (
   return true;
 };
 
+
+// 2. IssuesPage : ListBody 관련
+// 1) issue의 history.flag에 따른 Text 반환
+type THistoryFlag = 'open' | 'closed' | 'write' | 'update' | 'delete';
+const getIssueHistoryFlagText = (flag: THistoryFlag) => {
+  let resultText = '';
+  switch (flag) {
+    case 'open': resultText = '열렸습니다.'; break;
+    case 'closed': resultText = '닫혔습니다.'; break;
+    case 'write': resultText = '작성되었습니다.'; break;
+    case 'update': resultText = '수정되었습니다.'; break;
+    case 'delete': resultText = '삭제되었습니다.'; break;  
+    default: break;
+  }
+  return resultText;
+};
+
+
+
 export {
+  // 1. IssuesPage Filter 관련 (IssueList -> ListBody 컴포넌트에서 사용)
   getFilterLabelData,
   getFilterMilestoneData,
   getFilterAssigneeData,
   getFilterWriterData,
   getFilterSearchData,
   isZeroFilterSelection,
+
+  // 2. IssuesPage : ListBody 관련
+  getIssueHistoryFlagText,
 };

@@ -9,4 +9,10 @@ import Foundation
 
 struct Issues: Codable {
     var issues: [IssueResponse]
+    
+    static let empty = Self()
+    
+    init() {
+        issues = []
+    }
 }

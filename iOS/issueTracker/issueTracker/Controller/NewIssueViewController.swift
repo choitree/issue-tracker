@@ -27,6 +27,7 @@ class NewIssueViewController: UIViewController {
 }
 
 extension NewIssueViewController: UITableViewDataSource, UITableViewDelegate {
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.cellTitles.count
     }

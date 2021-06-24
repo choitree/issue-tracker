@@ -9,10 +9,24 @@ import UIKit
 import SwiftUI
 
 class IssueListViewController: UIViewController {
-
-    private var issueList: IssueResponse
+    
+    private var issueList: Issues
+    private var issueDetail: IssueResponse
     @IBOutlet weak var issueListTableView: UITableView!
     @IBOutlet weak var bottomToolbar: UIToolbar!
+    
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+        issueList = Issues.empty
+        issueDetail = IssueResponse.empty
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        issueList = Issues.empty
+        issueDetail = IssueResponse.empty
+        super.init(coder: coder)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.set(navigationBarTitle: NavigationItemTitles.issue.description)
@@ -22,30 +36,35 @@ class IssueListViewController: UIViewController {
         setuptableViewDelegateDataSource()
         setuptableViewCustomView()
         bottomToolbar.isHidden = true
+
         // _ = KeyChainService.shared.deleteUser(service: .gitHub)
     }
     
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-        issueList = IssueResponse.empty
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    required init?(coder: NSCoder) {
-        issueList = IssueResponse.empty
-        super.init(coder: coder)
-    }
-    
     override func viewDidAppear(_ animated: Bool) {
-        fetchIssueList()
         super.viewDidAppear(true)
+        fetchIssueList()
     }
     
     func fetchIssueList() {
-        let issueListAPI = APIEndPoint.init(path: "/temp", httpMethod: .get, decodingStrategy: .convertFromSnakeCase)
-        NetworkManager.request(with: issueListAPI, type: IssueResponse.self) { result in
+        let requestable = APIEndPoint.init(path: "/api/issues", httpMethod: .get, decodingStrategy: .convertFromSnakeCase)
+        NetworkManager.request(with: requestable, type: Issues.self) { [weak self] result in
             switch result {
             case .success(let data):
-                self.issueList = data
+                self?.issueList = data
+                self?.issueListTableView.reloadData()
+            case .failure(let error):
+                print(error)
+            }
+        }
+    }
+    
+    func fetchIssueDetailList(index: Int, completion: @escaping () -> Void) {
+        let requestable = APIEndPoint.init(path: "/api/issue/\(index)", httpMethod: .get, decodingStrategy: .convertFromSnakeCase)
+        NetworkManager.request(with: requestable, type: IssueResponse.self) { [weak self] result in
+            switch result {
+            case .success(let data):
+                self?.issueDetail = data
+                completion()
             case .failure(let error):
                 print(error)
             }
@@ -108,18 +127,28 @@ class IssueListViewController: UIViewController {
         footerView.backgroundColor = .clear
         self.issueListTableView.tableFooterView = footerView
     }
+    
+    func makeIssueTextPartForSwiftUI(index: Int) -> UIHostingController<IssueDetailView> {
+        let tempissueTextPart = IssueTextPart(title: issueDetail.title, minuteAgo: issueDetail.history.historyDateTime, content: issueDetail.contents)
+        
+        return UIHostingController.init(rootView: IssueDetailView(items: [tempissueTextPart], navigationTitle: issueDetail.title))
+    }
 }
 
 extension IssueListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        return self.issueList.issues.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let identity = IssueTableViewCell.cellIdentity
+        
         guard let cell = tableView.dequeueReusableCell(withIdentifier: identity) as? IssueTableViewCell else {
             return UITableViewCell()
         }
+        
+        let indexOfIssue = self.issueList.issues[indexPath.row]
+        cell.업데이트(이슈제목: indexOfIssue.title, 이슈설명: indexOfIssue.contents, 마일스톤제목: indexOfIssue.milestone.title, 레이블제목: indexOfIssue.isLabelCountZero())
         return cell
     }
 }
@@ -130,19 +159,28 @@ extension IssueListViewController: UITableViewDelegate {
         let shareAction = UIContextualAction(style: .normal,
                                              title: "수정",
                                              handler: { (_ :UIContextualAction, _:UIView, _:(Bool) -> Void) in
-        })
+                                             })
         let deleteAction = UIContextualAction(style: .destructive,
                                               title: "삭제",
                                               handler: { (_:UIContextualAction, _:UIView, _:(Bool) -> Void) in
-        })
+                                              })
         shareAction.backgroundColor = .systemBlue
         deleteAction.image = UIImage(systemName: ButtonImagesTitle.delete.description)
         return UISwipeActionsConfiguration(actions: [deleteAction, shareAction])
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let NextViewController = UIHostingController(rootView: IssueDetailView(navigationTitle: "이슈 리스트 #\(indexPath.row)"))
-        self.navigationController?.pushViewController(NextViewController, animated: true)
+        
+        if issueList.issues.count == 0 {
+            return
+        }
+        fetchIssueDetailList(index: issueList.issues[indexPath.row].issueId, completion: { [weak self] in
+            let NextViewController = self?.makeIssueTextPartForSwiftUI(index: self?.issueDetail.issueId ?? 0)
+            guard let NextVC = NextViewController else {
+                 return
+            }
+            self?.navigationController?.pushViewController(NextVC, animated: true)
+        })
     }
 }
 

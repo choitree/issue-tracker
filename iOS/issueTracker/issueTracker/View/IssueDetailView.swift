@@ -8,44 +8,66 @@
 import SwiftUI
 
 struct IssueDetailView: View {
+    let items: [IssueTextPart]
     let navigationTitle: String?
     var body: some View {
-        List {
-            NavigationLink.init(
-                destination: Mydestination(),
-                label: {
-                    IssueCell(cellNum: 0)
-                })
-            IssueCell(cellNum: 1)
+        VStack(alignment: .leading, spacing: 10) {
+            IssueText()
+            List(items) { item in
+                createDetailView(title: item.title, content: item.content, minuteAgo: item.minuteAgo)
+            }
+            .navigationTitle(self.navigationTitle ?? "")
         }
-        .navigationTitle(self.navigationTitle ?? "")
     }
-}
-
-struct Mydestination: View {
     
-    var body: some View {
-        VStack {
-            Text("우이")
-        }
-        .navigationTitle("아녕")
+    func createDetailView(title: String, content: String, minuteAgo: String) -> CellElement {
+        let cellElement: CellElement = CellElement(issueTextPart: IssueTextPart(title: title, minuteAgo: content, content: minuteAgo))
+        return cellElement
     }
 }
 
-struct IssueCell: View {
-    var cellNum: Int
+struct CellElement: View {
+    var id = Int()
+    var issueTextPart: IssueTextPart
     var body: some View {
         HStack {
             Image(systemName: "tortoise.fill")
-            Text("\(cellNum)")
+            IssueTextPart(title: issueTextPart.title, minuteAgo: issueTextPart.minuteAgo, content: issueTextPart.content)
         }
+    }
+}
+
+struct IssueTextPart: View, Identifiable {
+    var id = Int()
+    var title: String
+    var minuteAgo: String
+    var content: String
+    var body: some View {
+        VStack(alignment: .leading, spacing: nil, content: {
+            Text(title)
+                .multilineTextAlignment(.leading)
+            Text(minuteAgo)
+                .multilineTextAlignment(.leading)
+            Text(content)
+                .multilineTextAlignment(.leading)
+        })
+    }
+}
+
+struct IssueText: View {
+    var body: some View {
+        HStack {
+            Image(systemName: "exclamationmark.circle")
+            Text("열림")
+        }.background(Color(.blue))
+        .cornerRadius(20.0)
     }
 }
 
 #if DEBUG
 struct SwiftUIView_Previews: PreviewProvider {
     static var previews: some View {
-        IssueDetailView(navigationTitle: nil)
+        IssueDetailView(items: [IssueTextPart(title: "abcd", minuteAgo: "abcde", content: "abcdefg")], navigationTitle: nil)
     }
 }
 #endif

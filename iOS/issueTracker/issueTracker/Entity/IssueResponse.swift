@@ -50,4 +50,19 @@ struct IssueResponse: Codable, Equatable {
         self.labels = []
         self.comments = []
     }
+    
+    func isLabelCountZero() -> String {
+        if self.labels.count == 0 {
+            return ""
+        } else {
+            return self.labels[0].title
+        }
+    }
+    
+    func isCommentCountZero() -> [Comment] {
+        guard let tempcomment = self.comments, tempcomment.count > 0 else {
+            return [Comment.empty]
+        }
+        return tempcomment
+    }
 }

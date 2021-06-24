@@ -1,12 +1,9 @@
-import React, { useCallback, useState } from 'react';
-import { useRecoilState } from 'recoil';
+import React, { useCallback } from 'react';
 import styled, { css } from 'styled-components';
-
-import { filterSelectionAtom } from 'util/store/issueList';
 import { TIssueListFilterType } from 'util/reference';
+import { TFilterSelection } from 'util/store';
 import CircleCheckBox from './CircleCheckBox';
 import Modal from './Modal';
-import { useEffect } from 'react';
 
 interface IListItemImgType {
   // color: labelColor | image: userImage | text: onlyText (noCheckbox)
@@ -15,58 +12,19 @@ interface IListItemImgType {
   color?: string;
 }
 
-interface IListModal {
+export interface ICommonListModal {
   rightPos?: string;
   data?: TIssueListFilterType;
 }
 
-const ListModal = ({ rightPos, data, ...props }: IListModal) => {
+interface IListModal extends ICommonListModal {
+  handleCheckboxClick?: (e: React.MouseEvent | Event) => void;
+  selectionState: TFilterSelection;
+}
+
+const ListModal = ({ rightPos, data, handleCheckboxClick, selectionState, ...props }: IListModal) => {
   // 1. 일반
   const { title, items, type } = data!;
-
-  const [filterSelectionState, setFilterSelectionState] = useRecoilState(filterSelectionAtom);
-
-  const [arrCurrChecked, setArrCurrChecked] = useState<number[]>([]);
-  const [isCheckboxUpdate, setIsCheckboxUpdate] = useState(false);
-
-  // =========
-
-  // 2. useEffect
-  useEffect(() => {
-    if (!isCheckboxUpdate) return;
-    setFilterSelectionState({ ...filterSelectionState, [type]: arrCurrChecked })
-    setIsCheckboxUpdate(false);
-  }, [isCheckboxUpdate]);
-
-  // 3. events
-  const handleCircleCheckboxClick = (e: React.MouseEvent | Event) => {
-    const target = e.target as HTMLInputElement;
-
-    // 현재 ListModal의 Type이 레이블(Label)일 경우에만 동작하는 함수
-    const checkboxClickForTypeLabelOrAssignee = (checked: boolean) => {
-      if (checked)
-        setArrCurrChecked((arrCurrChecked) => {
-          let newArr: number[] = [];
-          if (arrCurrChecked.includes(-1))
-            newArr = [...arrCurrChecked.filter((id) => id !== -1), Number(target.id)];
-          else
-            target.id === '-1'
-              ? (newArr = [Number(target.id)])
-              : (newArr = arrCurrChecked.concat(Number(target.id)));
-          return newArr;
-        })
-      else setArrCurrChecked(arrCurrChecked.filter((id) => id !== Number(target.id)));
-    }
-
-    if (type === 'label' || type === 'assignee')
-      checkboxClickForTypeLabelOrAssignee(target.checked)
-    else {
-      target.checked
-        ? setArrCurrChecked([Number(target.id)])
-        : setArrCurrChecked([]);
-    }
-    setIsCheckboxUpdate(true);
-  };
 
   const renderItems = useCallback(
     () =>
@@ -83,15 +41,14 @@ const ListModal = ({ rightPos, data, ...props }: IListModal) => {
               color="default"
               id={`${id}`}
               name={name}
-              onClick={handleCircleCheckboxClick}
-              checked={filterSelectionState[type].includes(id)}
+              onClick={handleCheckboxClick}
+              checked={selectionState[type].includes(id)}
             />
           )}
         </MenuLabelTag>
       )),
-    [items, filterSelectionState],
+    [items, selectionState],
   );
-  // =========
 
   return (
     <ListModalLayout {...props} rightPos={rightPos}>
@@ -110,7 +67,7 @@ export default ListModal;
 
 // --- Styled Components ---
 // 1. 메인 (큰 틀)
-const ListModalLayout = styled(Modal) <{ rightPos?: string }>`
+const ListModalLayout = styled(Modal)<{ rightPos?: string }>`
   position: absolute;
   z-index: 99;
 

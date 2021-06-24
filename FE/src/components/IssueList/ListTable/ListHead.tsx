@@ -7,7 +7,6 @@ import { createAllFilterItems, createLabelsFilterItems, createMilestonesFilterIt
 import { TFilterTypes } from 'util/types';
 import {
   TextIssueList,
-  TIssueListFilterItem,
   TTextIssueListFilterItems,
 } from 'util/reference';
 import { IIssueListChildren } from '..';
@@ -15,8 +14,7 @@ import { IIssueListChildren } from '..';
 import { Checkbox, Tabs, Tab, Button } from '@material-ui/core';
 import { IconAlertCircle, IconArchive } from '../../Common/Icons';
 import { MdKeyboardArrowDown } from 'react-icons/md';
-import ListModal from '../../Common/ListModal';
-
+import ListFilterModal from '../ListFilterModal';
 
 type TIssueOpenOrClose = { open: number, close: number, issueIds: number[], length: number };
 
@@ -54,7 +52,7 @@ const ListHead = ({ data, handleFilterModalClick, ...props }: IIssueListChildren
 
   }, [data?.issues]);
 
-  // 2) 필터 (ListModal)에 들어가는 데이터 생성
+  // 2) 필터 (ListFilterModal)에 들어가는 데이터 생성
   useEffect(() => {
     if (!data) return;
     // assignee(담당자) & writer(작성자) ==> users 데이터
@@ -152,7 +150,7 @@ const ListHead = ({ data, handleFilterModalClick, ...props }: IIssueListChildren
       </RightRow>
       {filterVisibleState[name] && issueListFilterItems && (
         <RightRow>
-          <ListModal rightPos="0" data={issueListFilterItems[name]} />
+          <ListFilterModal rightPos="0" data={issueListFilterItems[name]} />
         </RightRow>
       )}
     </RightLayout>

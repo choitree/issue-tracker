@@ -5,8 +5,8 @@ import { filterVisibleAtom } from 'util/store';
 import { IIssueListChildren } from '..';
 import { Input, Button } from '@material-ui/core';
 import { ExpandMore } from '@material-ui/icons';
-import ListModal from 'components/Common/ListModal';
 import { TextIssueList, TextIssueListFilterMock } from 'util/reference';
+import ListFilterModal from '../ListFilterModal';
 
 const SearchBar = ({ handleFilterModalClick } : IIssueListChildren) => {
   const { filter: { caption, placeHolder } } = TextIssueList;
@@ -26,7 +26,7 @@ const SearchBar = ({ handleFilterModalClick } : IIssueListChildren) => {
 
       {filterVisibleState.search && (
         <SearchBarRow>
-          <ListModal data={searchData} />
+          <ListFilterModal data={searchData} />
         </SearchBarRow>
       )}
     </SearchBarLayout>

@@ -79,7 +79,7 @@ class IssueTrackerTests: XCTestCase {
         wait(for: [promise], timeout: 3)
     }
     
-    func test_네트워크_통신_테스트() throws {
+    func test네트워크URL_주입결과() throws {
         // given
         let sessionManager = SessionManagerStub()
         let requestable = APIEndPoint.init(path: "/endpoint", httpMethod: .get, decodingStrategy: .convertFromSnakeCase)

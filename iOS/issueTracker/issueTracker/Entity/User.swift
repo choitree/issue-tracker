@@ -11,7 +11,7 @@ struct User: Codable, Equatable {
     var userId: Int
     var profileImage: String
     var userName: String
-    var jwtToken: String
+    var jwtToken: String?
     
     static let empty = Self()
     

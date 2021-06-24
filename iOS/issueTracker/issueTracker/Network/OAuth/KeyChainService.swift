@@ -65,7 +65,7 @@ class KeyChainService {
         
         for service in Service.allCases {
             if self.readUser(service: service) != nil {
-                jwt = readUser(service: service)!.jwtToken
+                jwt = readUser(service: service)!.jwtToken!
             }
         }
 

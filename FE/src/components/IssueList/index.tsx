@@ -20,7 +20,7 @@ const IssueList = ( { data } : IIssueList) => {
   // 1) 일반 (recoil 등)
   const setFilterVisibleState = useSetRecoilState(filterVisibleAtom);
   const setFilterSelectionState = useSetRecoilState(filterSelectionAtom);
-  const isInitFilterSelectionState = useRecoilValue(isInitFilterSelectionSelector);
+  const isInitFilterSelection = useRecoilValue(isInitFilterSelectionSelector);
 
   // 2. useEffect
   // add body event
@@ -68,7 +68,7 @@ const IssueList = ( { data } : IIssueList) => {
   return (
     <IssueListLayout>
       <NavFilter {...{data, handleFilterModalClick}} />
-      {!isInitFilterSelectionState && <InitFilterButton onClick={handleInitFilterButtonClick}  />}
+      {!isInitFilterSelection && <InitFilterButton onClick={handleInitFilterButtonClick}  />}
       <ListTable {...{data, handleFilterModalClick}} />
     </IssueListLayout>
   );

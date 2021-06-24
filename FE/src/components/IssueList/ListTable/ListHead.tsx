@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components';
 import React, { useState, useEffect } from 'react';
-import { useRecoilState } from 'recoil';
-import { filterSelectionAtom, filterVisibleAtom, idOfCheckedIssuesAtom } from 'util/store';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { filterSelectionAtom, filterVisibleAtom, idOfCheckedIssuesAtom, isInitFilterSelectionSelector } from 'util/store';
 
 import { createAllFilterItems, createLabelsFilterItems, createMilestonesFilterItems, createUsersFilterItems, RECOIL_CLOSE_ISSUE, RECOIL_OPEN_ISSUE } from 'util/util';
 import { TFilterTypes } from 'util/types';
@@ -27,8 +27,9 @@ const ListHead = ({ data, handleFilterModalClick, ...props }: IIssueListChildren
   const [filterVisibleState, setFilterVisibleState] = useRecoilState(filterVisibleAtom);
   const [idOfCheckedIssuesState, setIdOfCheckedIssuesState] = useRecoilState(idOfCheckedIssuesAtom);
   const [filterSelectionState, setFilterSelectionState] = useRecoilState(filterSelectionAtom);
+  const isInitFilterSelection = useRecoilValue(isInitFilterSelectionSelector);
 
-  const [leftTabsState, setLeftTabsState] = useState<number>(0);
+  const [leftTabsState, setLeftTabsState] = useState<number | boolean>(0);
   const [issueOpenOrClose, setIssueOpenOrClose] = useState<TIssueOpenOrClose>({open: 0, close: 0, issueIds: [], length: 0});
   const [issueListFilterItems, setIssueListFilterItems] = useState<TTextIssueListFilterItems>();
 
@@ -68,7 +69,19 @@ const ListHead = ({ data, handleFilterModalClick, ...props }: IIssueListChildren
     setIssueListFilterItems(filterItems);
   }, [data?.milestones, data?.labels, data?.users]);
 
-  // 3) 
+  // 3) filterSelectionState의 상태가 열린이슈 / 닫힌이슈를 포함하고 있지 않다면
+    // LeftTabs 컴포넌트의 value는 false (비활성)
+  useEffect(() => {
+    let leftTabsTempValue : number | boolean = false;
+    if (isInitFilterSelection) {
+      if (filterSelectionState["search"].includes(RECOIL_OPEN_ISSUE))
+        leftTabsTempValue = 0;
+      else if (filterSelectionState["search"].includes(RECOIL_CLOSE_ISSUE))
+        leftTabsTempValue = 1;
+    }
+
+    setLeftTabsState(leftTabsTempValue);
+  }, [filterSelectionState]);
 
   // =========
 
@@ -160,7 +173,7 @@ const ListHead = ({ data, handleFilterModalClick, ...props }: IIssueListChildren
           checked={idOfCheckedIssuesState.length > 0}
           onClick={handleAllIssueCheckboxClick}
         />
-        <LeftTabs value={leftTabsState} onChange={handleLeftTabsState}>
+        <LeftTabs value={leftTabsState} onChange={handleLeftTabsState} >
           {renderLeftTabItems()}
         </LeftTabs>
       </ListHeadRow>

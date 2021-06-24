@@ -84,17 +84,30 @@ const issuesAllDataAtom = atom<TIssuePageData>({
     data: {
       issues: undefined,
       milestones: undefined,
-      labels: undefined
+      labels: undefined,
+      users: undefined
     }
   }
+});
+
+// issuesAllDataAtom이 초기 상태인지 확인
+const isInitIssuesAllDataSelector = selector({
+  key: 'isInitIssuesAllDataSelector',
+  get: ({ get }) => {
+    const issuesAllDataState = get(issuesAllDataAtom);
+    const isIssuesAllDataEmpty = Object.values(issuesAllDataState.data).every((v) => !v);
+    const result = (issuesAllDataState.isLoading && isIssuesAllDataEmpty);
+    return result;
+  },
 });
 
 
 export {
   filterVisibleAtom,
-  issuesAllDataAtom,
   filterSelectionAtom,
   isInitFilterSelectionSelector,
   idOfCheckedIssuesAtom,
+  issuesAllDataAtom,
+  isInitIssuesAllDataSelector,
 };
 export type { IFilterVisible, TFilterSelection };

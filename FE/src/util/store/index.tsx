@@ -1,10 +1,11 @@
 import { userDataAtom, authHeadersAtom, IUserData } from './global';
 import {
   filterVisibleAtom,
-  issuesAllDataAtom,
   filterSelectionAtom,
   isInitFilterSelectionSelector,
   idOfCheckedIssuesAtom,
+  issuesAllDataAtom,
+  isInitIssuesAllDataSelector,
   IFilterVisible,
   TFilterSelection,
 } from './issueList';
@@ -15,10 +16,11 @@ export {
   authHeadersAtom,
   // issueList
   filterVisibleAtom,
-  issuesAllDataAtom,
   filterSelectionAtom,
   isInitFilterSelectionSelector,
   idOfCheckedIssuesAtom,
+  issuesAllDataAtom,
+  isInitIssuesAllDataSelector,
 };
 export type {
   // global

@@ -1,5 +1,6 @@
+import { TTextIssueListFilterItems as TFilterAllItems } from 'util/reference';
 import { TFilterSelection } from 'util/store';
-import { IIssue } from 'util/types';
+import { IIssue, ILabel, IMilestone, IUser } from 'util/types';
 
 // 1. IssuesPage Filter 관련 (IssueList -> ListBody 컴포넌트에서 사용)
 // 1) 레이블
@@ -111,6 +112,87 @@ const getIssueHistoryFlagText = (flag: THistoryFlag) => {
   return resultText;
 };
 
+// 3. IssuesPage : ListHead 관련
+// 1) ListHead의 ListModal에 들어가는 아이템(FilterItem) 생성
+interface IUserFilterItem {
+  id: number;
+  name: string;
+  imgUrl: string;
+  imgType: 'image';
+}
+interface IMilestonesFilterItem {
+  id: number;
+  name: string;
+}
+interface ILabelsFilterItem {
+  id: number,
+  name: string,
+  color: string,
+  imgType: 'color',
+}
+interface ICreateAllFilterItemsProps {
+  usersFilterItems: IUserFilterItem[];
+  milestonesFilterItems: IMilestonesFilterItem[];
+  labelsFilterItems: ILabelsFilterItem[];
+}
+
+const createUsersFilterItems = (usersData: IUser[]) : IUserFilterItem[] =>
+  usersData.map(({ userId, userName, profileImage }) => ({
+    id: userId,
+    name: userName,
+    imgUrl: profileImage,
+    imgType: 'image',
+  }));
+
+const createMilestonesFilterItems = (milestonesData: IMilestone[]) : IMilestonesFilterItem[] =>
+  milestonesData.map(({ milestoneId, title }) => ({
+    id: milestoneId,
+    name: title,
+  }));
+
+const createLabelsFilterItems = (labelsData: ILabel[]) : ILabelsFilterItem[] =>
+  labelsData.map(({ labelId, title, bgColor }) => ({
+    id: labelId,
+    name: title,
+    color: bgColor,
+    imgType: 'color',
+  }));
+
+const createAllFilterItems = ({
+  usersFilterItems,
+  labelsFilterItems,
+  milestonesFilterItems,
+}: ICreateAllFilterItemsProps): TFilterAllItems => ({
+  assignee: {
+    title: '담당자 필터',
+    items: [
+      { id: -1, name: 'noAssignee', text: '담당자가 없는 이슈' },
+      ...usersFilterItems,
+    ],
+    type: 'assignee',
+  },
+  writer: {
+    title: '작성자 필터',
+    items: usersFilterItems,
+    type: 'writer',
+  },
+  milestone: {
+    title: '마일스톤 필터',
+    items: [
+      { id: -1, name: 'noMilestone', text: '마일스톤이 없는 이슈' },
+      ...milestonesFilterItems,
+    ],
+    type: 'milestone',
+  },
+  label: {
+    title: '레이블 필터',
+    items: [
+      { id: -1, name: 'noLabel', text: '레이블이 없는 이슈' },
+      ...labelsFilterItems,
+    ],
+    type: 'label',
+  },
+});
 
 
 export {
@@ -121,7 +203,12 @@ export {
   getFilterWriterData,
   getFilterSearchData,
   isZeroFilterSelection,
-
   // 2. IssuesPage : ListBody 관련
   getIssueHistoryFlagText,
+  // 3. IssuesPage : ListHead 관련
+  createUsersFilterItems,
+  createMilestonesFilterItems,
+  createLabelsFilterItems,
+  createAllFilterItems,
 };
+

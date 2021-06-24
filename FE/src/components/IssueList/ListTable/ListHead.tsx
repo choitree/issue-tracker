@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 import { filterSelectionAtom, filterVisibleAtom, idOfCheckedIssuesAtom } from 'util/store';
 
-import { RECOIL_CLOSE_ISSUE, RECOIL_OPEN_ISSUE } from 'util/util';
+import { createAllFilterItems, createLabelsFilterItems, createMilestonesFilterItems, createUsersFilterItems, RECOIL_CLOSE_ISSUE, RECOIL_OPEN_ISSUE } from 'util/util';
 import { TFilterTypes } from 'util/types';
 import {
   TextIssueList,
@@ -30,7 +30,7 @@ const ListHead = ({ data, handleFilterModalClick, ...props }: IIssueListChildren
 
   const [leftTabsState, setLeftTabsState] = useState<number>(0);
   const [issueOpenOrClose, setIssueOpenOrClose] = useState<TIssueOpenOrClose>({open: 0, close: 0, issueIds: [], length: 0});
-  const [issueListFilterData, setIssueListFilterData] = useState<TTextIssueListFilterItems>();
+  const [issueListFilterItems, setIssueListFilterItems] = useState<TTextIssueListFilterItems>();
 
   // =========
 
@@ -60,62 +60,15 @@ const ListHead = ({ data, handleFilterModalClick, ...props }: IIssueListChildren
     const { milestones, labels, users } = data;
     if (!milestones || !labels || !users) return;
 
-    const usersFilterItems: TIssueListFilterItem[] = users.users.map(
-      ({ userId, userName, profileImage }) => ({
-        id: userId,
-        name: userName,
-        imgUrl: profileImage,
-        imgType: 'image',
-      }),
-    );
-    const milestonesFilterItems: TIssueListFilterItem[] =
-      milestones.milestones.map(({ milestoneId, title }) => ({
-        id: milestoneId,
-        name: title,
-      }));
-    const labelsFilterItems: TIssueListFilterItem[] = labels.labels.map(
-      ({ labelId, title, bgColor }) => ({
-        id: labelId,
-        name: title,
-        color: bgColor,
-        imgType: 'color',
-      }),
-    );
+    const usersFilterItems = createUsersFilterItems(users.users);
+    const milestonesFilterItems = createMilestonesFilterItems(milestones.milestones);
+    const labelsFilterItems = createLabelsFilterItems(labels.labels);
+    const filterItems = createAllFilterItems({usersFilterItems, milestonesFilterItems, labelsFilterItems});
 
-    const fitlerData: TTextIssueListFilterItems = {
-      assignee: {
-        title: '담당자 필터',
-        items: [
-          { id: -1, name: 'noAssignee', text: '담당자가 없는 이슈' },
-          ...usersFilterItems,
-        ],
-        type: 'assignee',
-      },
-      writer: {
-        title: '작성자 필터',
-        items: usersFilterItems,
-        type: 'writer',
-      },
-      milestone: {
-        title: '마일스톤 필터',
-        items: [
-          { id: -1, name: 'noMilestone', text: '마일스톤이 없는 이슈' },
-          ...milestonesFilterItems,
-        ],
-        type: 'milestone',
-      },
-      label: {
-        title: '레이블 필터',
-        items: [
-          { id: -1, name: 'noLabel', text: '레이블이 없는 이슈' },
-          ...labelsFilterItems,
-        ],
-        type: 'label',
-      },
-    };
-
-    setIssueListFilterData(fitlerData);
+    setIssueListFilterItems(filterItems);
   }, [data?.milestones, data?.labels, data?.users]);
+
+  // 3) 
 
   // =========
 
@@ -184,9 +137,9 @@ const ListHead = ({ data, handleFilterModalClick, ...props }: IIssueListChildren
           <MdKeyboardArrowDown />
         </RightButton>
       </RightRow>
-      {filterVisibleState[name] && issueListFilterData && (
+      {filterVisibleState[name] && issueListFilterItems && (
         <RightRow>
-          <ListModal rightPos="0" data={issueListFilterData[name]} />
+          <ListModal rightPos="0" data={issueListFilterItems[name]} />
         </RightRow>
       )}
     </RightLayout>
@@ -198,9 +151,6 @@ const ListHead = ({ data, handleFilterModalClick, ...props }: IIssueListChildren
     <ListHeadLayout {...props}>
       {/* 좌측 */}
       <ListHeadRow>
-        {/* 아이템 중 하나라도 선택되어있을때 indeterminate checked 모두 true */}
-        {/* 아이템 모두 선택되어 있을때 checked만 true */}
-        {/* 아이템 선택X --> 모두 false */}
         <Checkbox
           color="primary"
           indeterminate={

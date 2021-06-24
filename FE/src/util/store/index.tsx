@@ -1,7 +1,7 @@
 import { userDataAtom, authHeadersAtom, IUserData } from './global';
 import {
   filterVisibleAtom,
-  issuePageDataAtom,
+  issuesAllDataAtom,
   filterSelectionAtom,
   isInitFilterSelectionSelector,
   idOfCheckedIssuesAtom,
@@ -15,7 +15,7 @@ export {
   authHeadersAtom,
   // issueList
   filterVisibleAtom,
-  issuePageDataAtom,
+  issuesAllDataAtom,
   filterSelectionAtom,
   isInitFilterSelectionSelector,
   idOfCheckedIssuesAtom,

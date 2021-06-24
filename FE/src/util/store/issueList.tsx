@@ -77,8 +77,8 @@ type TIssuePageData = {
   };
 };
 
-const issuePageDataAtom = atom<TIssuePageData>({
-  key: 'issuePageDataAtom',
+const issuesAllDataAtom = atom<TIssuePageData>({
+  key: 'issuesAllDataAtom',
   default: {
     isLoading: true,
     data: {
@@ -90,10 +90,9 @@ const issuePageDataAtom = atom<TIssuePageData>({
 });
 
 
-
 export {
   filterVisibleAtom,
-  issuePageDataAtom,
+  issuesAllDataAtom,
   filterSelectionAtom,
   isInitFilterSelectionSelector,
   idOfCheckedIssuesAtom,

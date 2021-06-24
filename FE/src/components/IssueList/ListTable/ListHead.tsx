@@ -54,7 +54,7 @@ const ListHead = ({ data, handleFilterModalClick, ...props }: IIssueListChildren
 
   }, [data?.issues]);
 
-  // 2) 필터 (ListModal)에 들어가는 데이터 생성 (함수 분리하고싶다.. 하지만 시간없다)
+  // 2) 필터 (ListModal)에 들어가는 데이터 생성
   useEffect(() => {
     if (!data) return;
     // assignee(담당자) & writer(작성자) ==> users 데이터

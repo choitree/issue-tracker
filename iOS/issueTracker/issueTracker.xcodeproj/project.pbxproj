@@ -19,6 +19,7 @@
 		1EBF208A2679757F002DB7D5 /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EBF20892679757F002DB7D5 /* Service.swift */; };
 		1EBF20A2267A36C0002DB7D5 /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EBF20892679757F002DB7D5 /* Service.swift */; };
 		1EBF20A3267A36CD002DB7D5 /* KeyChainService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EBF208726788945002DB7D5 /* KeyChainService.swift */; };
+		1EF56D892684B36B00E4C179 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF56D882684B36B00E4C179 /* UIColor+Extension.swift */; };
 		682B4BE011CA14575C24F34D /* Pods_issueTracker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E19682525322E19E4D02278 /* Pods_issueTracker.framework */; };
 		69BE8872FD99ABE3F2F614D1 /* Pods_issueTrackerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2068B1122B9D86C7D4819FA /* Pods_issueTrackerTests.framework */; };
 		820550872671F30400BF8857 /* NewIssue.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 820550862671F30400BF8857 /* NewIssue.storyboard */; };
@@ -98,6 +99,7 @@
 		1EBF20852678809D002DB7D5 /* OAuthManager+Extenstion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OAuthManager+Extenstion.swift"; sourceTree = "<group>"; };
 		1EBF208726788945002DB7D5 /* KeyChainService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyChainService.swift; sourceTree = "<group>"; };
 		1EBF20892679757F002DB7D5 /* Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
+		1EF56D882684B36B00E4C179 /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "UIColor+Extension.swift"; path = "../../../../../../swift연습/UIColor+Extension.swift"; sourceTree = "<group>"; };
 		3E19682525322E19E4D02278 /* Pods_issueTracker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_issueTracker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		57CC79858D2AAB460462BA41 /* Pods-issueTracker.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-issueTracker.debug.xcconfig"; path = "Target Support Files/Pods-issueTracker/Pods-issueTracker.debug.xcconfig"; sourceTree = "<group>"; };
 		78BAD36C6F41720987E3C966 /* Pods-issueTrackerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-issueTrackerTests.debug.xcconfig"; path = "Target Support Files/Pods-issueTrackerTests/Pods-issueTrackerTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -204,6 +206,14 @@
 			path = OAuth;
 			sourceTree = "<group>";
 		};
+		1EF56D872684B23400E4C179 /* UIColor+Extension */ = {
+			isa = PBXGroup;
+			children = (
+				1EF56D882684B36B00E4C179 /* UIColor+Extension.swift */,
+			);
+			path = "UIColor+Extension";
+			sourceTree = "<group>";
+		};
 		822247382678559100BB0022 /* issueTrackerTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -276,6 +286,7 @@
 		82A69856266F585100F16D39 /* issueTracker */ = {
 			isa = PBXGroup;
 			children = (
+				1EF56D872684B23400E4C179 /* UIColor+Extension */,
 				82A74F4E26771B3200F3CCCD /* Network */,
 				827A16B426734AB700F3622F /* Entity */,
 				1E15AA232670B4DF00A573DB /* View */,
@@ -636,6 +647,7 @@
 				82A74F5126771B4500F3CCCD /* NetworkManager.swift in Sources */,
 				82F44A62267730AB0010991F /* EndPoint.swift in Sources */,
 				822E8A56267B0C5800002CF5 /* HeaderView.swift in Sources */,
+				1EF56D892684B36B00E4C179 /* UIColor+Extension.swift in Sources */,
 				1E5BEC1B2681C2650050450A /* LabelListView.swift in Sources */,
 				82A6985C266F585100F16D39 /* LoginViewController.swift in Sources */,
 				82CB7EE32675F1A700B85F98 /* Milestone.swift in Sources */,

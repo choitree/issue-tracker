@@ -7,6 +7,10 @@
 
 import Foundation
 
+struct Labels: Codable {
+    let labels: [Label]
+}
+
 struct Label: Codable, Equatable {
     var labelId: Int?
     var title: String

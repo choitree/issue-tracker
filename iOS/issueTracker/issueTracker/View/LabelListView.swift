@@ -9,17 +9,14 @@ import SwiftUI
 
 struct LabelListView: View {
     let colors: [Color] = [.red, .green, .blue, .red, .green, .blue]
+    @ObservedObject var labelData: LabelData
     
     var body: some View {
         
             List {
-                CustomCell(labelText: "레이블 이름", description: "레이블에 대한 설명(한줄만 보인다.) 한줄만 보이도록 하려면 어떻게 해야할까요?", labelColor: .brown)
-                CustomCell(labelText: "레이블 이름", description: "레이블에 대한 설명(한줄만 보인다.) 한줄만 보이도록 하려면 어떻게 해야할까요?", labelColor: .cyan)
-                CustomCell(labelText: "레이블 이름", description: "레이블에 대한 설명(한줄만 보인다.) 한줄만 보이도록 하려면 어떻게 해야할까요?", labelColor: .green)
-                CustomCell(labelText: "레이블 이름", description: "레이블에 대한 설명(한줄만 보인다.) 한줄만 보이도록 하려면 어떻게 해야할까요?", labelColor: .orange)
-                
-                ForEach(colors, id: \.self) { color in CustomCell(labelText: "레이블 이름", description: "레이블에 대한 설명(한줄만 보인다.) 한줄만 보이도록 하려면 어떻게 해야할까요?", labelColor: UIColor(color))
-                }
+                ForEach(labelData.labelData) { ab in
+                    CustomCell(labelText: ab.labelTitle, description: ab.description, labelColor: ab.labelColor)
+                           }
               
             }
             .listStyle(GroupedListStyle())
@@ -33,6 +30,19 @@ struct LabelListView: View {
             )
        
     }
+}
+
+struct OneOfLabelData: Identifiable {
+    var id: Int
+    
+    let labelTitle: String
+    let description: String
+    let labelColor: UIColor
+
+}
+
+class LabelData: ObservableObject {
+    var labelData: [OneOfLabelData] = []
 }
 
 extension View {
@@ -120,7 +130,7 @@ struct CustomCell: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            LabelListView()
+            LabelListView(labelData: LabelData())
         }
     }
 }

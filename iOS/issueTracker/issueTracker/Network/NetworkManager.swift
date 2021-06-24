@@ -69,14 +69,16 @@ final class NetworkManager {
             return
         }
         
+        let headers: HTTPHeaders = HTTPHeaders(["Authorization": "Bearer \(KeyChainService.shared.getCurrentUserJWT())"])
         let decoder = JSONDecoder()
         decoder.keyDecodingStrategy = request.decodingStrategy
-        AF.request(url, method: request.httpMethod)
+        AF.request(url, method: request.httpMethod, headers: headers)
             .validate(statusCode: 200..<300)
             .responseDecodable(of: T.self, decoder: decoder) { response in
                 switch response.result {
                 case .success(let data):
                     completion(.success(data))
+                    print(data)
                 case .failure(let error):
                     completion(.failure(error))
                 }

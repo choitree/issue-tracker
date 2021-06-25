@@ -14,6 +14,7 @@ interface IListItemImgType {
 
 export interface ICommonListModal {
   rightPos?: string;
+  topPos?: string;
   data?: TIssueListFilterType;
 }
 
@@ -22,7 +23,7 @@ interface IListModal extends ICommonListModal {
   selectionState: TFilterSelection;
 }
 
-const ListModal = ({ rightPos, data, handleCheckboxClick, selectionState, ...props }: IListModal) => {
+const ListModal = ({ rightPos, topPos, data, handleCheckboxClick, selectionState, ...props }: IListModal) => {
   // 1. 일반
   const { title, items, type } = data!;
 
@@ -51,7 +52,7 @@ const ListModal = ({ rightPos, data, handleCheckboxClick, selectionState, ...pro
   );
 
   return (
-    <ListModalLayout {...props} rightPos={rightPos}>
+    <ListModalLayout {...props} rightPos={rightPos} topPos={topPos}>
       {/* Title */}
       <ListModalRow type="title">
         <MenuTitle>{title}</MenuTitle>
@@ -67,7 +68,7 @@ export default ListModal;
 
 // --- Styled Components ---
 // 1. 메인 (큰 틀)
-const ListModalLayout = styled(Modal)<{ rightPos?: string }>`
+const ListModalLayout = styled(Modal)<{ rightPos?: string, topPos?: string }>`
   position: absolute;
   z-index: 99;
 
@@ -76,8 +77,8 @@ const ListModalLayout = styled(Modal)<{ rightPos?: string }>`
   border-radius: 0.6rem;
   border: 1px solid ${({ theme }) => theme.colors.grayScale.line};
 
-  top: 0.2rem;
   right: ${({ rightPos }) => (rightPos ? rightPos : 'auto')};
+  top: ${({ topPos }) => (topPos ? topPos : '0.2rem')};
 `;
 
 const ListModalRow = styled.div<{ type: 'title' | 'items' }>`

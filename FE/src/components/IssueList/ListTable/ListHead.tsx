@@ -15,6 +15,7 @@ import { Checkbox, Tabs, Tab, Button } from '@material-ui/core';
 import { IconAlertCircle, IconArchive } from '../../Common/Icons';
 import { MdKeyboardArrowDown } from 'react-icons/md';
 import ListFilterModal from '../ListFilterModal';
+import useCreateFilterItems from 'util/hooks/useCreateFilterItems';
 
 type TIssueOpenOrClose = { open: number, close: number, issueIds: number[], length: number };
 
@@ -29,8 +30,8 @@ const ListHead = ({ data, handleFilterModalClick, ...props }: IIssueListChildren
 
   const [leftTabsState, setLeftTabsState] = useState<number | boolean>(0);
   const [issueOpenOrClose, setIssueOpenOrClose] = useState<TIssueOpenOrClose>({open: 0, close: 0, issueIds: [], length: 0});
-  const [issueListFilterItems, setIssueListFilterItems] = useState<TTextIssueListFilterItems>();
 
+  const issueListFilterItems = useCreateFilterItems(data);  // 필터 (ListFilterModal)에 들어가는 데이터 생성
   // =========
 
   // 2. useEffect
@@ -51,21 +52,6 @@ const ListHead = ({ data, handleFilterModalClick, ...props }: IIssueListChildren
     });
 
   }, [data?.issues]);
-
-  // 2) 필터 (ListFilterModal)에 들어가는 데이터 생성
-  useEffect(() => {
-    if (!data) return;
-    // assignee(담당자) & writer(작성자) ==> users 데이터
-    const { milestones, labels, users } = data;
-    if (!milestones || !labels || !users) return;
-
-    const usersFilterItems = createUsersFilterItems(users.users);
-    const milestonesFilterItems = createMilestonesFilterItems(milestones.milestones);
-    const labelsFilterItems = createLabelsFilterItems(labels.labels);
-    const filterItems = createAllFilterItems({usersFilterItems, milestonesFilterItems, labelsFilterItems});
-
-    setIssueListFilterItems(filterItems);
-  }, [data?.milestones, data?.labels, data?.users]);
 
   // 3) filterSelectionState의 상태가 열린이슈 / 닫힌이슈를 포함하고 있지 않다면
     // LeftTabs 컴포넌트의 value는 false (비활성)

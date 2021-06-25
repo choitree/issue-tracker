@@ -1,31 +1,66 @@
-import { FaPlus } from 'react-icons/fa';
 import styled from 'styled-components';
+import React, { useEffect } from 'react';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { useCreateFilterItems, useRefreshUserState } from 'util/hooks';
+import { writeDataAtom, writeOptionsVisibleAtom } from 'util/store/issueWrite';
+import { IIssueWriteChildren } from '.';
+import { FaPlus } from 'react-icons/fa';
+import WriteOptionsModal from './WriteOptionsModal';
 
-const WriteBody = ({ ...props }) => {
+const WriteBody = ({ data, handleWriteOptionsModalClick, ...props }: IIssueWriteChildren) => {
+  // 1. 일반 (Recoil 등..)
+  const { refreshUserDataState } = useRefreshUserState();
+  const [writeDataState, setWrtieDataState] = useRecoilState(writeDataAtom);
+  const writeOptionsVisibleState = useRecoilValue(writeOptionsVisibleAtom);
+  // 필터 (WriteFilterModal (생성해야함) )에 들어가는 데이터 생성
+  const issueWriteFilterItems = useCreateFilterItems(data, 'writeOptions');
+
+  // 2. useEffect
+  useEffect(() => {
+    const authorId = Number(refreshUserDataState.id);
+    setWrtieDataState({ ...writeDataState, authorId });
+  }, [refreshUserDataState]);
+
+  // 3. events
+  const handleWriteChange = (e: React.ChangeEvent) => {
+    const { name, value } = e.currentTarget as HTMLTextAreaElement | HTMLInputElement;
+    setWrtieDataState({ ...writeDataState, [name]: value });
+  };
+
   return (
-    <WriteBodyLayout { ...props }>
-      <AvatarImage src={'/image/profile.png'} />
+    <WriteBodyLayout {...props}>
+      <AvatarImage src={refreshUserDataState.profileImage} />
       <IssueWriteBlock>
-        <input type="text" placeholder="제목" />
+        <input
+          type="text"
+          name="title"
+          placeholder="제목"
+          onChange={handleWriteChange}
+        />
         <div>
-          <textarea />
+          <textarea name="contents" onChange={handleWriteChange} />
           <span>코멘트를 입력하세요</span>
         </div>
       </IssueWriteBlock>
-      <IssueWriteSideList>
-        <li>
-          <p>담당자</p>
-          <button><FaPlus /></button>
-        </li>
-        <li>
-          <p>레이블</p>
-          <button><FaPlus /></button>
-        </li>
-        <li>
-          <p>마일스톤</p>
-          <button><FaPlus /></button>
-        </li>
-      </IssueWriteSideList>
+      {issueWriteFilterItems && (
+        <IssueWriteSideList>
+          <li>
+            <p>담당자</p>
+            <button id="modalBtn" onClick={() => handleWriteOptionsModalClick("assignee")}><FaPlus /></button>
+            {writeOptionsVisibleState.assignee && (<WriteOptionsModal rightPos="0" topPos="3.6rem" data={issueWriteFilterItems['assignee']} />)}
+          </li>
+          <li>
+            <p>레이블</p>
+            <button id="modalBtn" onClick={() => handleWriteOptionsModalClick("label")}><FaPlus /></button>
+            {writeOptionsVisibleState.label && (<WriteOptionsModal rightPos="0" topPos="3.6rem" data={issueWriteFilterItems['label']} />)}
+          </li>
+          <li>
+            <p>마일스톤</p>
+            <button id="modalBtn" onClick={() => handleWriteOptionsModalClick("milestone")}><FaPlus /></button>
+            {writeOptionsVisibleState.milestone && (<WriteOptionsModal rightPos="0" topPos="3.6rem" data={issueWriteFilterItems['milestone']} /> )}
+          </li>
+        </IssueWriteSideList>
+      )}
     </WriteBodyLayout>
   );
 };
@@ -43,6 +78,8 @@ const WriteBodyLayout = styled.div`
 // 1) 작성자 이미지
 const AvatarImage = styled.img`
   width: 100%;
+  border-radius: 50%;
+  border: 1px solid ${({ theme }) => theme.colors.grayScale.line};
 `;
 
 // 2. 작성폼 & 작성폼 사이드 리스트
@@ -105,6 +142,7 @@ const IssueWriteSideList = styled.ul`
   background-color: #fff;
   height: fit-content;
   li {
+    position: relative;
     color: ${({ theme }) => theme.colors.grayScale.label};
     padding: 1.8rem;
     display: grid;

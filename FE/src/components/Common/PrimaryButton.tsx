@@ -5,6 +5,7 @@ import { TChildren } from '../../util/types';
 interface IAddButton {
   children?: TChildren;
   btnStyle?: 'medium' | 'small';
+  onClick?: any;
 }
 
 const PrimaryButton = ({ children, btnStyle = 'medium', ...props }: IAddButton) => (

@@ -2,69 +2,162 @@ import styled from 'styled-components';
 import { FaEdit, FaTrashAlt } from 'react-icons/fa';
 import PrimaryButton from '../components/Common/PrimaryButton';
 import AddIcon from '@material-ui/icons/Add';
-import { useState } from 'react';
+import CloseICon from '@material-ui/icons/Close';
+import { useEffect, useState } from 'react';
 import { LabelEdit } from '../components/LabelList/LabelEdit';
 
-interface IlabelTitle {
+interface ILabelTitle {
   color: string;
-  bg_color: string;
+  bgColor: string;
+}
+
+export interface ILabel {
+  labelId: number;
+  title: string;
+  description: string;
+  color: string;
+  bgColor: string;
+  editor?: boolean;
 }
 
 const LabelListPage = () => {
-  const data = {
-    "label": [
+
+  const [labels, setLabels] = useState([] as ILabel[]);
+  const [toggleEdit, setToggleEdit] = useState(false);
+  const [toggleNewEditor, setToggleNewEditor] = useState(false);
+
+  const getLabels = async () => {
+    const data = await fetch(
+      'http://ec2-52-79-56-138.ap-northeast-2.compute.amazonaws.com/api/labels',
       {
-        "id": 1,
-        "title": "feature",
-        "description": "기능에 대한 레이블",
-        "color": "#fff",
-        "bg-color": "blue"
+        method: 'GET',
+        headers: {
+          accept: 'application/json',
+          Authorization: 'Bearer ' + localStorage.getItem('token'),
+        },
       },
-      {
-        "id": 2,
-        "title": "bug",
-        "description": "버그에 대한 레이블",
-        "color": "#ff4545",
-        "bg-color": "#333"
-      }
-    ]
+    );
+    const json: { labels: ILabel[] } = await data.json();
+    if (data.status === 200) {
+      const labelData = json.labels;
+      setLabels(labelData);
+    }
   };
 
-  const [toggleEdit, setToggleEdit] = useState(true);
-
-
-  const labels = data.label.map(label => 
-    <StyleLabelItem>
-      <StyleLabelTitle color={label.color} bg_color={label['bg-color']}>{label.title}</StyleLabelTitle>
-      <StyleLabelDescription>{label.description}</StyleLabelDescription>
-      <StyleLabelButtons>
-        <StyleLabelEditButton><FaEdit/>편집</StyleLabelEditButton>
-        <StlyeLabelDeleteButton><FaTrashAlt/>삭제</StlyeLabelDeleteButton>
-      </StyleLabelButtons>
-    </StyleLabelItem>
-  );
-  return (
-    <>
-      {
-        toggleEdit &&
-        <ul>
-          <LabelEdit headerText='새로운 레이블 추가' />
-        </ul>
+  const onToggleEditor = (label:ILabel) => {
+    const tmpLabels = labels.map(v => {
+      const tmpLabel = {...v};
+      if (tmpLabel.labelId === label.labelId) {
+        tmpLabel.editor = true;
+      } else {
+        tmpLabel.editor = false;
       }
-      <div>
+      return tmpLabel;
+    });
+    setLabels(tmpLabels);
+    setToggleEdit(true);
+  }
+
+  const deleteLabel = async (labelId:number) => {
+    try {
+      const result = await fetch(
+        `http://ec2-52-79-56-138.ap-northeast-2.compute.amazonaws.com/api/label/${labelId}`,
+        {
+          method: 'DELETE',
+          headers: {
+            Authorization: 'Bearer ' + localStorage.getItem('token'),
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+      if(result.status === 200) {
+        const tmpLabels = labels.map((v) => ({ ...v }));
+        setLabels(tmpLabels.filter(v => v.labelId !== labelId));
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  useEffect(() => {
+    if (labels.length === 0) {
+      getLabels();
+    }
+  }, []);
+
+  const labelsComponent:JSX.Element[] = [];
+  labels.forEach(label => {
+    labelsComponent.push(
+      <StyleLabelItem key={label.labelId}>
+        <StyleLabelTitle color={label.color} bgColor={label['bgColor']}>
+          {label.title}
+        </StyleLabelTitle>
+        <StyleLabelDescription>{label.description}</StyleLabelDescription>
+        <StyleLabelButtons>
+          <StyleLabelEditButton onClick={() => onToggleEditor(label)}>
+            <FaEdit />
+            편집
+          </StyleLabelEditButton>
+          <StlyeLabelDeleteButton onClick={() => deleteLabel(label.labelId)}>
+            <FaTrashAlt />
+            삭제
+          </StlyeLabelDeleteButton>
+        </StyleLabelButtons>
+      </StyleLabelItem>,
+    );
+    if(label.editor) {
+      labelsComponent.push(
+        <LabelEdit
+          key={'e' + label.labelId}
+          setToggleEdit={setToggleEdit}
+          toggleEdit={toggleEdit}
+          headerText="레이블 편집"
+          data={label}
+          getLabels={getLabels}
+        />
+      );
+    }
+  });
+  return (
+    <StyleLabelListContainer>
+      <LabelListHeader>
         {/* 레이블 / 마일스톤 버튼 넣을 공간 */}
-        <AddButtonLayout btnStyle="small">
-          <AddIcon />
-          추가
-        </AddButtonLayout>    
-      </div>
+        <div></div>
+        <AddButtonLayout
+          btnStyle="small"
+          onClick={() => setToggleNewEditor(!toggleNewEditor)}
+        >
+          {toggleNewEditor ? <CloseICon /> : <AddIcon />}
+          {toggleNewEditor ? '닫기' : '추가'}
+        </AddButtonLayout>
+      </LabelListHeader>
+      {toggleNewEditor && (
+        <ul>
+          <LabelEdit
+            setToggleEdit={setToggleNewEditor}
+            toggleEdit={toggleNewEditor}
+            headerText="새로운 레이블 추가"
+            getLabels={getLabels}
+          />
+        </ul>
+      )}
       <StyleLabelList>
-        <li>3개의 레이블</li>
-        {labels}
+        <li>{labels.length}개의 레이블</li>
+        {labelsComponent}
       </StyleLabelList>
-    </>
-  )
+    </StyleLabelListContainer>
+  );
 }
+
+const StyleLabelListContainer = styled.div`
+  padding-bottom: 5rem;
+`
+
+const LabelListHeader = styled.div`
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: space-between;
+`;
 
 const AddButtonLayout = styled(PrimaryButton)`
   height: 100%;
@@ -82,7 +175,7 @@ const StyleLabelList = styled.ul`
   border-radius: 1rem;
   overflow: hidden;
   border: 1px solid ${({ theme }) => theme.colors.grayScale.line};
-  li:first-child {
+  & > li:first-child {
     padding: 1.125rem 2rem;
     border-bottom: 1px solid ${({ theme }) => theme.colors.grayScale.line};
   }
@@ -100,11 +193,11 @@ const StyleLabelItem = styled.li`
   }
 `;
 
-const StyleLabelTitle = styled.div<IlabelTitle>`
+const StyleLabelTitle = styled.div<ILabelTitle>`
   padding: 0.25rem 1rem;
   border-radius: 1.875rem;
   color: ${(props) => props.color};
-  background-color: ${(props) => props.bg_color};
+  background-color: ${(props) => props.bgColor};
   width: fit-content;
 `;
 

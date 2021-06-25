@@ -2,6 +2,7 @@ import "styled-components";
 
 declare module "styled-components" {
   type TFontFamily = 'normal' | 'logo';
+  type TFontWeight = 'normal' | 'middle' | 'bold';
   type TFontSize = 'XS' | 'S' | 'M' | 'L' | 'XL' | 'LOGO';
   type TGrayScale =
     | "offWhite" | "bgColor" | "inputBgColor"
@@ -18,7 +19,7 @@ declare module "styled-components" {
       [name in TFontFamily]: string;
     };
     fontWeight: {
-      [name: string]: string;
+      [name in TFontWeight]: string;
     };
     fontSize: {
       [sizeName in TFontSize]: string;

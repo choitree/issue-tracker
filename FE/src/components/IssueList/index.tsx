@@ -1,14 +1,13 @@
 import { useCallback, useEffect } from 'react';
 import styled from 'styled-components';
-import { useRecoilState } from 'recoil';
-import {
-  filterVisibleAtom,
-  IFilterVisibleAtom,
-} from 'util/store';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { filterSelectionAtom, filterVisibleAtom, IFilterVisible, isInitFilterSelectionSelector } from 'util/store';
+import { IAllGetRequestDatas, TFilterTypes } from 'util/types';
 
 import ListTable from './ListTable';
 import NavFilter from './NavFilter';
-import { IAllGetRequestDatas, TFilterTypes } from 'util/types';
+import InitFilterButton from './InitFilterButton';
+import { RECOIL_OPEN_ISSUE } from 'util/util';
 
 export interface IIssueList { data?: IAllGetRequestDatas }
 
@@ -19,7 +18,9 @@ export interface IIssueListChildren extends IIssueList {
 
 const IssueList = ( { data } : IIssueList) => {
   // 1) 일반 (recoil 등)
-  const [, setFilterVisibleState] = useRecoilState(filterVisibleAtom);
+  const setFilterVisibleState = useSetRecoilState(filterVisibleAtom);
+  const setFilterSelectionState = useSetRecoilState(filterSelectionAtom);
+  const isInitFilterSelection = useRecoilValue(isInitFilterSelectionSelector);
 
   // 2. useEffect
   // add body event
@@ -49,7 +50,7 @@ const IssueList = ( { data } : IIssueList) => {
   // issueList의 모든 modal
   const handleFilterModalClick = useCallback(
     (strType: TFilterTypes) => {
-      setFilterVisibleState((filterVisibleState: IFilterVisibleAtom) => ({
+      setFilterVisibleState((filterVisibleState: IFilterVisible) => ({
         ...filterVisibleState,
         [strType]: !filterVisibleState[strType],
       }));
@@ -57,9 +58,17 @@ const IssueList = ( { data } : IIssueList) => {
     [],
   );
 
+  const handleInitFilterButtonClick = useCallback(
+    () =>
+      setFilterSelectionState({
+        search: [RECOIL_OPEN_ISSUE], assignee: [], label: [], milestone: [], writer: [] }),
+    [],
+  );
+
   return (
     <IssueListLayout>
       <NavFilter {...{data, handleFilterModalClick}} />
+      {!isInitFilterSelection && <InitFilterButton onClick={handleInitFilterButtonClick}  />}
       <ListTable {...{data, handleFilterModalClick}} />
     </IssueListLayout>
   );

@@ -5,11 +5,11 @@ import { TChildren } from '../../util/types';
 interface IAddButton {
   children?: TChildren;
   btnStyle?: 'medium' | 'small';
-  onClick?: any;
+  onClick?: (e : React.MouseEvent | Event) => void;
 }
 
-const PrimaryButton = ({ children, btnStyle = 'medium', ...props }: IAddButton) => (
-  <PrimaryButtonLayout variant="contained" {...props}>
+const PrimaryButton = ({ children, btnStyle = 'medium', onClick, ...props }: IAddButton) => (
+  <PrimaryButtonLayout variant="contained" onClick={onClick} {...props}>
     {children}
   </PrimaryButtonLayout>
 );

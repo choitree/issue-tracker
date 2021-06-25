@@ -7,7 +7,7 @@ interface ILoadingSpinner {
 const LoadingSpinner = ({ children, ...props }: ILoadingSpinner) => (
   <SpinnerLayout {...props}>
     <SpinnerAnimationBlock />
-    {children && children}
+    {children && <LoadingText>{children}</LoadingText>}
   </SpinnerLayout>
 );
 
@@ -23,6 +23,12 @@ const SpinnerLayout = styled.div`
   text-align: center;
   min-width: 100%;
   min-height: 20vh;
+`;
+
+const LoadingText = styled.p`
+  font-size: 1.1rem;
+  font-weight: ${({ theme }) => theme.fontWeight.bold};
+  color: ${({ theme }) => theme.colors.grayScale.title};
 `;
 
 const spin = keyframes`
@@ -43,3 +49,5 @@ const SpinnerAnimationBlock = styled.div`
   height: 5rem;
   animation: ${spin} 1s linear infinite;
 `;
+
+

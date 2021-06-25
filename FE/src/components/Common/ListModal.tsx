@@ -1,12 +1,9 @@
-import React, { useCallback, useState } from 'react';
-import { useRecoilState } from 'recoil';
+import React, { useCallback } from 'react';
 import styled, { css } from 'styled-components';
-
-import { filterSelectionAtom, filterVisibleAtom } from 'util/store/issueList';
 import { TIssueListFilterType } from 'util/reference';
+import { TFilterSelection } from 'util/store';
 import CircleCheckBox from './CircleCheckBox';
 import Modal from './Modal';
-import { useEffect } from 'react';
 
 interface IListItemImgType {
   // color: labelColor | image: userImage | text: onlyText (noCheckbox)
@@ -15,68 +12,26 @@ interface IListItemImgType {
   color?: string;
 }
 
-interface IListModal {
+export interface ICommonListModal {
   rightPos?: string;
+  topPos?: string;
   data?: TIssueListFilterType;
 }
 
-const MODAL_CLOSE_TIME = 200;
+interface IListModal extends ICommonListModal {
+  handleCheckboxClick?: (e: React.MouseEvent | Event) => void;
+  selectionState: TFilterSelection;
+}
 
-const ListModal = ({ rightPos, data, ...props }: IListModal) => {
+const ListModal = ({ rightPos, topPos, data, handleCheckboxClick, selectionState, ...props }: IListModal) => {
   // 1. 일반
   const { title, items, type } = data!;
 
-  const [filterSelectionState, setFilterSelectionState] = useRecoilState(filterSelectionAtom);
-  const [, setFilterVisibleState] = useRecoilState(filterVisibleAtom);
-
-  const [arrCurrChecked, setArrCurrChecked] = useState<string[]>([]);
-  const [isCheckboxUpdate, setIsCheckboxUpdate] = useState(false);
-
-  // =========
-
-  // 2. useEffect
-  useEffect(() => {
-    if (!isCheckboxUpdate) return;
-    setFilterSelectionState({ ...filterSelectionState, [type]: arrCurrChecked })
-    setIsCheckboxUpdate(false);
-  }, [isCheckboxUpdate]);
-
-  // 3. events
-  const handleCircleCheckboxClick = (e: React.MouseEvent | Event) => {
-    const target = e.target as HTMLInputElement;
-
-    // 현재 ListModal의 Type이 레이블(Label)일 경우에만 동작하는 함수
-    const clickCheckboxForTypeLabel = (checked: boolean) => {
-      if (checked)
-        setArrCurrChecked((arrCurrChecked) => {
-          let newArr: string[] = [];
-          if (arrCurrChecked.includes('noLabel'))
-            newArr = [...arrCurrChecked.filter((name) => name !== 'noLabel'), target.name];
-          else
-            target.name === 'noLabel'
-              ? (newArr = [target.name])
-              : (newArr = arrCurrChecked.concat(target.name));
-          return newArr;
-        })
-      else setArrCurrChecked(arrCurrChecked.filter((name) => name !== target.name));
-    }
-
-    if (type === 'label') clickCheckboxForTypeLabel(target.checked)
-    // else {
-    //   target.checked
-    //     ? (
-    //       setArrCurrChecked([target.name]),
-    //       setTimeout(() => setFilterVisibleState((filterVisibleState) => ({ ...filterVisibleState, [type]: false })), MODAL_CLOSE_TIME)
-    //     )
-    //     : setArrCurrChecked([]);
-    // }
-    setIsCheckboxUpdate(true);
-  };
-
+ 
   const renderItems = useCallback(
     () =>
-      items.map(({ imgType, name, text, color, imgUrl }, idx) => (
-        <MenuLabelTag key={idx}>
+      items.map(({ id, imgType, name, text, color, imgUrl }) => (
+        <MenuLabelTag key={id}>
           <MenuTextBlock>
             {imgType !== 'text' && (color || imgUrl) && (
               <MenuImageBlock imgType={imgType} color={color} imgUrl={imgUrl} />
@@ -86,19 +41,19 @@ const ListModal = ({ rightPos, data, ...props }: IListModal) => {
           {imgType !== 'text' && (
             <CircleCheckBox
               color="default"
+              id={`${id}`}
               name={name}
-              onClick={handleCircleCheckboxClick}
-              checked={filterSelectionState[type].includes(name)}
+              onClick={handleCheckboxClick}
+              checked={selectionState[type].includes(id)}
             />
           )}
         </MenuLabelTag>
       )),
-    [items, filterSelectionState],
+    [items, selectionState],
   );
-  // =========
 
   return (
-    <ListModalLayout {...props} rightPos={rightPos}>
+    <ListModalLayout {...props} rightPos={rightPos} topPos={topPos}>
       {/* Title */}
       <ListModalRow type="title">
         <MenuTitle>{title}</MenuTitle>
@@ -114,7 +69,7 @@ export default ListModal;
 
 // --- Styled Components ---
 // 1. 메인 (큰 틀)
-const ListModalLayout = styled(Modal) <{ rightPos?: string }>`
+const ListModalLayout = styled(Modal)<{ rightPos?: string, topPos?: string }>`
   position: absolute;
   z-index: 99;
 
@@ -123,8 +78,8 @@ const ListModalLayout = styled(Modal) <{ rightPos?: string }>`
   border-radius: 0.6rem;
   border: 1px solid ${({ theme }) => theme.colors.grayScale.line};
 
-  top: 0.2rem;
   right: ${({ rightPos }) => (rightPos ? rightPos : 'auto')};
+  top: ${({ topPos }) => (topPos ? topPos : '0.2rem')};
 `;
 
 const ListModalRow = styled.div<{ type: 'title' | 'items' }>`

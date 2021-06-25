@@ -2,6 +2,8 @@ import styled, { keyframes } from 'styled-components';
 import qs from 'qs';
 import { RouteComponentProps } from 'react-router-dom';
 import { useEffect } from 'react';
+import { useSetRecoilState } from 'recoil';
+import { authHeadersAtom, IUserData, userDataAtom } from 'util/store';
 
 interface decodedInterface {
   exp?: number;
@@ -16,6 +18,20 @@ const LoginCallBackPage = ({ history }: RouteComponentProps) => {
   const query = qs.parse(window.location.search, { ignoreQueryPrefix: true });
   const code:string = query.code as string;
 
+  const setUserDataState = useSetRecoilState(userDataAtom);
+  const setAuthHeadersState = useSetRecoilState(authHeadersAtom);
+
+  const createUserInfo = (json : any) : IUserData => {
+    const result : IUserData = {
+      token: json.jwtToken,
+      id: json.userId.toString(),
+      name: json.userName.toString(),
+      email: json.email.toString(),
+      profileImage: json.profileImage.toString(),
+    };
+    return result;
+  }
+
   const getLoginToken = async () => {
     const data = await fetch(
       `http://ec2-52-79-56-138.ap-northeast-2.compute.amazonaws.com/api/user/login`,  {
@@ -28,11 +44,25 @@ const LoginCallBackPage = ({ history }: RouteComponentProps) => {
     );
     const json = await data.json();
     console.log(json);
-    localStorage.setItem('token', json.jwtToken);
-    localStorage.setItem('id', json.userId.toString());
-    localStorage.setItem('name', json.userName.toString());
-    localStorage.setItem('email', json.email.toString());
-    localStorage.setItem('profileImage', json.profileImage.toString());
+
+    const { token, id, name, email, profileImage } = createUserInfo(json);
+
+    setUserDataState({ token, id, name, email, profileImage });
+    setAuthHeadersState((authHeadersState) => ({
+      ...authHeadersState,
+      headers: {
+        ...authHeadersState.headers,
+        Authorization: `Bearer ${token}`,
+      },
+      isLoading: false,
+    }));
+
+    localStorage.setItem('token', token);
+    localStorage.setItem('id', id);
+    localStorage.setItem('name', name);
+    localStorage.setItem('email', email);
+    localStorage.setItem('profileImage', profileImage);
+
     history.push('/issues');
   };
 

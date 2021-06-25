@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import useRefreshUserState from 'util/hooks/useRefreshUserState';
+
 import Logo from './Logo';
 import UserMenu from './UserMenu';
 import { TextHeader } from '../../util/reference';
-
 
 export interface IHeaderUser {
   profileImage?: string | null;
@@ -12,19 +13,17 @@ export interface IHeaderUser {
 
 const Header = () => {
   const { logo } = TextHeader;
-  const [userInfo, setUserInfo] = useState<IHeaderUser>({
-    profileImage: '',
-    username: '',
-  });
-  useEffect(
-    () =>
-      setUserInfo({
-        ...userInfo,
-        profileImage: localStorage.getItem('profileImage'),
-        username: localStorage.getItem('name'),
-      }),
-    [],
-  );
+  const [userInfo, setUserInfo] = useState<IHeaderUser>({ profileImage: '', username: '' });
+
+  const { refreshUserDataState } = useRefreshUserState();
+
+  useEffect(() => {
+    setUserInfo({
+      ...userInfo,
+      profileImage: refreshUserDataState.profileImage,
+      username: refreshUserDataState.name,
+    });
+  }, [refreshUserDataState]);
 
   return (
     <HeaderLayout>

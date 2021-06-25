@@ -27,6 +27,7 @@ const ListModal = ({ rightPos, topPos, data, handleCheckboxClick, selectionState
   // 1. 일반
   const { title, items, type } = data!;
 
+ 
   const renderItems = useCallback(
     () =>
       items.map(({ id, imgType, name, text, color, imgUrl }) => (

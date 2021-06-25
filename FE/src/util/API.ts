@@ -1,8 +1,8 @@
 // POSTMAN: https://documenter.getpostman.com/view/8052286/TzY7cDPK
 // AWS API: http://ec2-52-79-56-138.ap-northeast-2.compute.amazonaws.com
 
-type TGetRequestTypes = 'users' | 'issues' | 'issue' | 'milestones' | 'milestone' | 'labels' | 'label' ;
-type TGetRequestRequiredPaths = { [type in TGetRequestTypes]: boolean };
+type TRequestTypes = 'users' | 'issues' | 'issue' | 'milestones' | 'milestone' | 'labels' | 'label' ;
+type TGetRequestRequiredPaths = { [type in TRequestTypes]: boolean };
 
 const getRequestRequiredPaths: TGetRequestRequiredPaths = {
   users: false,
@@ -18,7 +18,7 @@ const END_POINT: string =
   'http://ec2-52-79-56-138.ap-northeast-2.compute.amazonaws.com';
 
 const createGetRequestAddress = (
-  type: TGetRequestTypes,
+  type: TRequestTypes,
   strPath: string = '',
 ): string => {
   try {
@@ -33,4 +33,6 @@ const createGetRequestAddress = (
   }
 };
 
-export { END_POINT, createGetRequestAddress };
+const createRequestAddress = (type: TRequestTypes): string => `${END_POINT}/api/${type}`;
+
+export { END_POINT, createGetRequestAddress, createRequestAddress };

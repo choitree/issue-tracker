@@ -106,7 +106,7 @@ const getIssueHistoryFlagText = (flag: THistoryFlag) => {
     case 'closed': resultText = '닫혔습니다.'; break;
     case 'write': resultText = '작성되었습니다.'; break;
     case 'update': resultText = '수정되었습니다.'; break;
-    case 'delete': resultText = '삭제되었습니다.'; break;  
+    case 'delete': resultText = '삭제되었습니다.'; break;
     default: break;
   }
   return resultText;
@@ -158,38 +158,50 @@ const createLabelsFilterItems = (labelsData: ILabel[]) : ILabelsFilterItem[] =>
     imgType: 'color',
   }));
 
-const createAllFilterItems = ({
-  usersFilterItems,
-  labelsFilterItems,
-  milestonesFilterItems,
-}: ICreateAllFilterItemsProps): TFilterAllItems => ({
+const createAllFilterItems = (
+  {
+    usersFilterItems,
+    labelsFilterItems,
+    milestonesFilterItems,
+  }: ICreateAllFilterItemsProps,
+  filterType: 'filter' | 'writeOptions' = 'filter',
+): TFilterAllItems => ({
   assignee: {
-    title: '담당자 필터',
-    items: [
-      { id: -1, name: 'noAssignee', text: '담당자가 없는 이슈' },
-      ...usersFilterItems,
-    ],
+    title: `담당자${filterType === 'filter' ? ' 필터' : ''}`,
+    items:
+      filterType === 'filter'
+        ? [
+            { id: -1, name: 'noAssignee', text: '담당자가 없는 이슈' },
+            ...usersFilterItems,
+          ]
+        : [...usersFilterItems],
     type: 'assignee',
   },
   writer: {
-    title: '작성자 필터',
+    title: `작성자${filterType === 'filter' ? ' 필터' : ''}`,
     items: usersFilterItems,
     type: 'writer',
   },
   milestone: {
-    title: '마일스톤 필터',
-    items: [
-      { id: -1, name: 'noMilestone', text: '마일스톤이 없는 이슈' },
-      ...milestonesFilterItems,
-    ],
+    title: `마일스톤${filterType === 'filter' ? ' 필터' : ''}`,
+    items:
+      filterType === 'filter'
+        ? [
+            { id: -1, name: 'noMilestone', text: '마일스톤이 없는 이슈' },
+            ...milestonesFilterItems,
+          ]
+        : [...milestonesFilterItems],
     type: 'milestone',
   },
   label: {
-    title: '레이블 필터',
-    items: [
-      { id: -1, name: 'noLabel', text: '레이블이 없는 이슈' },
-      ...labelsFilterItems,
-    ],
+    title: `레이블${filterType === 'filter' ? ' 필터' : ''}`,
+    items:
+      filterType === 'filter'
+        ? [
+            { id: -1, name: 'noLabel', text: '레이블이 없는 이슈' },
+            ...labelsFilterItems,
+          ]
+        : [...labelsFilterItems],
     type: 'label',
   },
 });

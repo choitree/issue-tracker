@@ -50,11 +50,11 @@ const queryMaker = (url: URL) =>
 interface IuseFetch {
   url: string;
   options?: IFetchOptions;
-  checkStates?: any[];  // DependencyList
+  deps?: any[];  // DependencyList
   checkBeforeFetchExecute?: () => boolean;
 }
 
-function useFetch<T>({ url, options, checkStates = [], checkBeforeFetchExecute } : IuseFetch) {
+function useFetch<T>({ url, options, deps = [], checkBeforeFetchExecute } : IuseFetch) {
   const urlObjects = new URL(url);
   const initialFetchState: IFetchState = {
     endpoint: urlObjects.host,
@@ -68,10 +68,12 @@ function useFetch<T>({ url, options, checkStates = [], checkBeforeFetchExecute }
 
   const [fetchState, setFetchState] = useState<IFetchState>(initialFetchState);
   const [result, setResult] = useState<T | undefined>();
+  const [prevDeps, setPrevDeps] = useState<any[]>([]);
 
   const fetchData = async () => {
     try {
       const res = await fetch(url, options as RequestInit);
+      console.log(res);
       const data = await res.json();
       setResult(data);
       setFetchState({ ...fetchState, isLoading: false });
@@ -81,13 +83,20 @@ function useFetch<T>({ url, options, checkStates = [], checkBeforeFetchExecute }
   };
 
   useEffect(() => {
-    // checkStates가 있고, checkStates내에서 하나라도 falsy한 값이 라면 실행안함.
-    if (checkStates.length > 0 && checkStates.some((v) => !v)) return;
+    if (deps.length > 0) {
+      let isExecute = deps.findIndex((dep) => !dep) <= -1;
+
+      if (prevDeps.length === 0) setPrevDeps(deps);
+      else isExecute = isExecute && deps.some((dep, idx) => prevDeps[idx] !== dep);
+
+      if (!isExecute) return;
+    } else
+      (prevDeps.length > 0) && setPrevDeps([]);
 
     checkBeforeFetchExecute
       ? checkBeforeFetchExecute() && fetchData()
       : fetchData();
-  }, checkStates);
+  }, deps);
 
   return { result, fetchState };
 }

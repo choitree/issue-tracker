@@ -4,7 +4,6 @@
 팀원 : Robin, Tree, Rano, Json, Hong, ZG
 
 [브랜치 전략](https://github.com/malaheaven/issue-tracker/wiki/%EB%B8%8C%EB%9E%9C%EC%B9%98-%EC%A0%84%EB%9E%B5)    
-[mockup api docs](https://documenter.getpostman.com/view/8052286/TzY7cDPK)
 
 ## BE
 [API docs](https://documenter.getpostman.com/view/8052286/TzY7eZkt)   

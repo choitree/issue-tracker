@@ -7,7 +7,7 @@
 [mockup api docs](https://documenter.getpostman.com/view/8052286/TzY7cDPK)
 
 ## BE
-[배포 주소](http://ec2-52-79-56-138.ap-northeast-2.compute.amazonaws.com)   
+[API docs](https://documenter.getpostman.com/view/8052286/TzY7eZkt)   
 
 ROBIN: 마라탕 먹는 사람  
 TREE: 죽다 살아난 사람

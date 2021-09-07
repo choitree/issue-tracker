@@ -23,7 +23,7 @@ function useRefreshAPIDataState () {
   const useFetchParams = useMemo(
     () => ({
       options: issuePagefetchOptions,
-      checkStates: [issuePagefetchOptions, isInitIssuesAllDataState],
+      deps: [issuePagefetchOptions, isInitIssuesAllDataState],  // dependency
     }),
     [issuePagefetchOptions, isInitIssuesAllDataState],
   );

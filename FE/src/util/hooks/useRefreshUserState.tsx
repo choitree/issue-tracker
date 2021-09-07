@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { authHeadersAtom, IUserData, userDataAtom } from 'util/store';
 
-const useRefreshUserState = (checkStates = []) => {
+const useRefreshUserState = (deps = []) => {
 
   const history = useHistory();
   const [authHeadersState, setAuthHeadersState] =
@@ -40,9 +40,9 @@ const useRefreshUserState = (checkStates = []) => {
   };
 
   useEffect(() => {
-    if (checkStates.length > 0 && checkStates.some((v) => !v)) return;
+    if (deps.length > 0 && deps.some((v) => !v)) return;
     updateUserAndAuthHeaders();
-  }, checkStates);
+  }, deps);
 
   return {
     refreshUserDataState: userDataState,

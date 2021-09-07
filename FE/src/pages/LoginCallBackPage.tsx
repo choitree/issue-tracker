@@ -16,7 +16,7 @@ interface decodedInterface {
 
 const LoginCallBackPage = ({ history }: RouteComponentProps) => {
   const query = qs.parse(window.location.search, { ignoreQueryPrefix: true });
-  const code:string = query.code as string;
+  const code : string = query.code as string;
 
   const setUserDataState = useSetRecoilState(userDataAtom);
   const setAuthHeadersState = useSetRecoilState(authHeadersAtom);
@@ -34,7 +34,7 @@ const LoginCallBackPage = ({ history }: RouteComponentProps) => {
 
   const getLoginToken = async () => {
     const data = await fetch(
-      `http://ec2-52-79-56-138.ap-northeast-2.compute.amazonaws.com/api/user/login`,  {
+      `http://ec2-3-38-47-96.ap-northeast-2.compute.amazonaws.com/api/user/login`,  {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

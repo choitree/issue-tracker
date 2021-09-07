@@ -20,7 +20,7 @@ const WriteFooter = ({ ...props }) => {
   const [issueWriteFetchOptions, setIssueWriteFetchOptions] = useState<IFetchOptions | undefined>();
 
   // 2. useFetch & useEffect
-  const useFetchParams = useMemo(() => ({ options: issueWriteFetchOptions, checkStates: [isSubmit]}), [issueWriteFetchOptions]);
+  const useFetchParams = useMemo(() => ({ options: issueWriteFetchOptions, deps: [isSubmit]}), [issueWriteFetchOptions]);
   const { result: writeResult } = useFetch<object>({...useFetchParams, url: createRequestAddress('issue')});
 
   useEffect(() => setIsSubmit(true), [issueWriteFetchOptions]);

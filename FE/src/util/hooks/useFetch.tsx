@@ -73,12 +73,12 @@ function useFetch<T>({ url, options, deps = [], checkBeforeFetchExecute } : Iuse
   const fetchData = async () => {
     try {
       const res = await fetch(url, options as RequestInit);
-      console.log(res);
       const data = await res.json();
       setResult(data);
       setFetchState({ ...fetchState, isLoading: false });
     } catch (e) {
-      setFetchState({ ...fetchState, isLoading: false, isError: true, errorMessage: e.message });
+      const { message } = e as Error;
+      setFetchState({ ...fetchState, isLoading: false, isError: true, errorMessage: message });
     }
   };
 

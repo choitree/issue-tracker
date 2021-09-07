@@ -1,5 +1,8 @@
 // POSTMAN: https://documenter.getpostman.com/view/8052286/TzY7cDPK
+
 // AWS API: http://ec2-52-79-56-138.ap-northeast-2.compute.amazonaws.com
+// AWS API: http://ec2-3-38-47-96.ap-northeast-2.compute.amazonaws.com  // 변경 (2021.08.29)
+
 
 type TRequestTypes = 'users' | 'issues' | 'issue' | 'milestones' | 'milestone' | 'labels' | 'label' ;
 type TGetRequestRequiredPaths = { [type in TRequestTypes]: boolean };
@@ -11,11 +14,11 @@ const getRequestRequiredPaths: TGetRequestRequiredPaths = {
   milestones: false,
   milestone: true,  // id
   labels: false,
-  label: true,  // id
+  label: false,  // id (false, 전체 허용)
 };
 
 const END_POINT: string =
-  'http://ec2-52-79-56-138.ap-northeast-2.compute.amazonaws.com';
+  'http://ec2-3-38-47-96.ap-northeast-2.compute.amazonaws.com';
 
 const createGetRequestAddress = (
   type: TRequestTypes,
@@ -28,7 +31,8 @@ const createGetRequestAddress = (
     else result += strPath;
     return result;
   } catch (e) {
-    console.error(e.message);
+    const { message } = e as Error;
+    console.error(message);
     return '';
   }
 };

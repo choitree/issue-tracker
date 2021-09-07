@@ -5,6 +5,7 @@ import AddIcon from '@material-ui/icons/Add';
 import CloseICon from '@material-ui/icons/Close';
 import { useEffect, useState } from 'react';
 import { LabelEdit } from '../components/LabelList/LabelEdit';
+import { createGetRequestAddress } from 'util/API';
 
 interface ILabelTitle {
   color: string;
@@ -28,7 +29,7 @@ const LabelListPage = () => {
 
   const getLabels = async () => {
     const data = await fetch(
-      'http://ec2-52-79-56-138.ap-northeast-2.compute.amazonaws.com/api/labels',
+      createGetRequestAddress('labels'),
       {
         method: 'GET',
         headers: {
@@ -61,7 +62,7 @@ const LabelListPage = () => {
   const deleteLabel = async (labelId:number) => {
     try {
       const result = await fetch(
-        `http://ec2-52-79-56-138.ap-northeast-2.compute.amazonaws.com/api/label/${labelId}`,
+        createGetRequestAddress('label', `/${labelId}`),
         {
           method: 'DELETE',
           headers: {

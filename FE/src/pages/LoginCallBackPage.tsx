@@ -4,6 +4,7 @@ import { RouteComponentProps } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useSetRecoilState } from 'recoil';
 import { authHeadersAtom, IUserData, userDataAtom } from 'util/store';
+import { END_POINT } from 'util/API';
 
 interface decodedInterface {
   exp?: number;
@@ -16,13 +17,13 @@ interface decodedInterface {
 
 const LoginCallBackPage = ({ history }: RouteComponentProps) => {
   const query = qs.parse(window.location.search, { ignoreQueryPrefix: true });
-  const code : string = query.code as string;
+  const code: string = query.code as string;
 
   const setUserDataState = useSetRecoilState(userDataAtom);
   const setAuthHeadersState = useSetRecoilState(authHeadersAtom);
 
-  const createUserInfo = (json : any) : IUserData => {
-    const result : IUserData = {
+  const createUserInfo = (json: any): IUserData => {
+    const result: IUserData = {
       token: json.jwtToken,
       id: json.userId.toString(),
       name: json.userName.toString(),
@@ -30,18 +31,16 @@ const LoginCallBackPage = ({ history }: RouteComponentProps) => {
       profileImage: json.profileImage.toString(),
     };
     return result;
-  }
+  };
 
   const getLoginToken = async () => {
-    const data = await fetch(
-      `http://ec2-3-38-47-96.ap-northeast-2.compute.amazonaws.com/api/user/login`,  {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ code })
-      }
-    );
+    const data = await fetch(`${END_POINT}/api/user/login`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ code }),
+    });
     const json = await data.json();
     console.log(json);
 

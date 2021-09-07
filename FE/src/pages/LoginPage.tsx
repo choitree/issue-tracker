@@ -13,7 +13,10 @@ const LoginPage = () => {
     or,
     register
   } = TextLogin;
-  const GITHUB_URL = `https://github.com/login/oauth/authorize?client_id=04c310007c2531045237&redirect_uri=http://localhost:3000/oauth-callback`;
+
+  const GITHUB_URL = process.env.REACT_APP_GITHUB_URL;
+  console.log(GITHUB_URL)
+
   return (
     <LoginLayout>
       <LoginContentLayout>

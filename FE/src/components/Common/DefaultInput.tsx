@@ -5,10 +5,11 @@ interface IDefaultInput {
   children?: TChildren;
   type: string;
   placeholder?: string;
+  readOnly?: boolean;
 }
 
 const DefaultInput = ({ children, ...props }: IDefaultInput) => (
-  <DefaultInputLayout {...props} />
+  <DefaultInputLayout {...props}/>
 );
 
 export default DefaultInput;

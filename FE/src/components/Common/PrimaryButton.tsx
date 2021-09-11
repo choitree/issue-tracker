@@ -5,6 +5,7 @@ import { TChildren } from '../../util/types';
 interface IAddButton {
   children?: TChildren;
   btnStyle?: 'medium' | 'small';
+  disabled?: boolean;
   onClick?: (e : React.MouseEvent | Event) => void;
 }
 

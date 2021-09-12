@@ -31,7 +31,7 @@
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" placeholder="코멘트는 여기에 작성하세요" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="WH5-EM-QVn">
-                                        <rect key="frame" x="16" y="54.5" width="382" height="446.5"/>
+                                        <rect key="frame" x="16" y="54.5" width="382" height="430.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
@@ -45,7 +45,7 @@
                                     <constraint firstItem="WH5-EM-QVn" firstAttribute="leading" secondItem="0no-6O-CIO" secondAttribute="leading" constant="16" id="YNe-FA-aW1"/>
                                     <constraint firstAttribute="trailing" secondItem="CyX-xR-pk8" secondAttribute="trailing" constant="16" id="bSw-eU-7dz"/>
                                     <constraint firstAttribute="width" secondItem="0no-6O-CIO" secondAttribute="height" multiplier="375:454" id="fF0-T7-Hzo"/>
-                                    <constraint firstAttribute="bottom" secondItem="WH5-EM-QVn" secondAttribute="bottom" id="mPj-lM-baw"/>
+                                    <constraint firstAttribute="bottom" secondItem="WH5-EM-QVn" secondAttribute="bottom" constant="16" id="mPj-lM-baw"/>
                                     <constraint firstItem="CyX-xR-pk8" firstAttribute="leading" secondItem="NdP-hG-IHr" secondAttribute="trailing" constant="17" id="ooe-Ex-qB2"/>
                                     <constraint firstItem="WH5-EM-QVn" firstAttribute="top" secondItem="CyX-xR-pk8" secondAttribute="bottom" constant="21" id="uYN-UH-28Q"/>
                                 </constraints>
@@ -69,6 +69,7 @@
                     </view>
                     <connections>
                         <outlet property="conditionTableView" destination="EeN-d6-V3Z" id="rhc-lQ-IT7"/>
+                        <outlet property="newIssueContent" destination="WH5-EM-QVn" id="Mu4-J0-0oe"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

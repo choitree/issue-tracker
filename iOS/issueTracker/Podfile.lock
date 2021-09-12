@@ -1,0 +1,24 @@
+PODS:
+  - Alamofire (5.4.3)
+  - MarkdownView (1.7.1)
+  - SwiftLint (0.43.1)
+
+DEPENDENCIES:
+  - Alamofire (~> 5.4)
+  - MarkdownView
+  - SwiftLint
+
+SPEC REPOS:
+  trunk:
+    - Alamofire
+    - MarkdownView
+    - SwiftLint
+
+SPEC CHECKSUMS:
+  Alamofire: e447a2774a40c996748296fa2c55112fdbbc42f9
+  MarkdownView: cf30a97ab39b2bce04406adce541972c882363bd
+  SwiftLint: 99f82d07b837b942dd563c668de129a03fc3fb52
+
+PODFILE CHECKSUM: c2188209ddbf8814d5c8e15b83fd1a4a70df1d0d
+
+COCOAPODS: 1.10.1

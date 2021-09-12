@@ -1,4 +1,3 @@
-import Auth from '../components/Auth';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { TextHeader, TextLogin } from '../util/reference';
@@ -6,27 +5,26 @@ import PrimaryButton from '../components/Common/PrimaryButton';
 import DefaultInput from '../components/Common/DefaultInput';
 
 const LoginPage = () => {
-  const {
-    github,
-    placeHolder,
-    id,
-    or,
-    register
-  } = TextLogin;
-  const GITHUB_URL = `https://github.com/login/oauth/authorize?client_id=04c310007c2531045237&redirect_uri=http://localhost:3000/oauth-callback`;
+  const { github, placeHolder, id, or, register } = TextLogin;
+
+  const GITHUB_URL = process.env.REACT_APP_GITHUB_URL;
+
+
   return (
     <LoginLayout>
       <LoginContentLayout>
         <LoginLogoLayout>{TextHeader.logo}</LoginLogoLayout>
-        <GitHubButtonLayout btnStyle="medium"><a href={GITHUB_URL}>{github}</a></GitHubButtonLayout>
+        <GitHubButtonLayout btnStyle="medium">
+          <a href={GITHUB_URL}>{github}</a>
+        </GitHubButtonLayout>
         <SeparatorLayout>{or}</SeparatorLayout>
-        <InputLayout type="text" placeholder={placeHolder.id} />
-        <InputLayout type="password" placeholder={placeHolder.password} />
-        <LoginButtonLayout btnStyle="medium">{id}</LoginButtonLayout>
+
+        {/* Local Login : 비활성 / 로컬 로그인 기능이 있다면 활성! */}
+        <InputLayout type="text" placeholder={placeHolder.id} readOnly />
+        <InputLayout type="password" placeholder={placeHolder.password} readOnly />
+        <LoginButtonLayout btnStyle="medium" disabled>{id}</LoginButtonLayout>
         <RegisterLinkStyle>
-          <Link to="/register">
-            {register}
-          </Link>
+          <Link to="/register" onClick={(e) => e.preventDefault()}>{register}</Link>
         </RegisterLinkStyle>
       </LoginContentLayout>
     </LoginLayout>

@@ -1,45 +1,105 @@
+# issue tracker
 
-# issue-tracker
-그룹프로젝트 #5
+<!-- 이슈 리스트 이미지 (FE) -->
 
-- [Project 소개](https://github.com/malaheaven/issue-tracker)
-- [DB ERD](https://github.com/malaheaven/issue-tracker/wiki/%5BBE%5DERD%EC%84%A4%EA%B3%84)
-- [API docs](https://documenter.getpostman.com/view/8052286/TzY7eZkt)
+### 데모
+
+<img src="https://user-images.githubusercontent.com/64049682/122515094-e6e5b000-d047-11eb-9a00-a2ecfafc8f66.gif" alt="iOS" width="300" /><br/>
+
+## 🤼 팀원 구성
+
+| 팀원  | 소속 | 자기소개                                  |
+| ----- | ---- | ----------------------------------------- |
+| Robin | BE   | 🍜 마라탕을 좋아하는 개발자               |
+| Tree  | BE   | 🌲 나무처럼 앉아서 코딩하는 개발자        |
+| Rano  | FE   | 🦕 느릿 느릿 공룡 개발자, 코딩하는 농사꾼 |
+| json  | FE   | 🐬아쿠아리움을 좋아하는 개발자            |
+| ZG    | iOS  | ZG 입니다                                 |
+| Hong  | iOS  | Hong 입니다                               |
+
+## ⚙️ 주요 기능
+
+- 로그인(GitHub OAuth 적용), 로그아웃 기능
+- 이슈 목록 조회(조건별 필터)
+- 이슈 (생성, 삭제, 수정)
+- 라벨 목록 조회
+- 라벨 (생성, 삭제,수정)
+- 마일스톤 목록 조회
+- 마일스톤 (생성, 삭제, 수정)
+- 코멘트 (조회, 생성, 수정)
+
+## 🛠Tech Stack
+
+### 🖥 Front-end
+
+<p>
+    <img src="https://img.shields.io/badge/HTML5-E34F26?style=flat-square&logo=HTML5&logoColor=white"/>
+    <img src="https://img.shields.io/badge/CSS3-1572B6?style=flat-square&logo=CSS3&logoColor=white"/>
+    <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=JavaScript&logoColor=white"/>
+    <img src="https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=TypeScript&logoColor=white"/>
+</p>
+
+###### Library
+
+<p>
+    <img src="https://img.shields.io/badge/React-61DAFB?style=flat-square&logo=React&logoColor=white"/>
+    <img src="https://img.shields.io/badge/React Router-61DAFB?style=flat-square&logo=ReactRouter&logoColor=white"/>
+    <img src="https://img.shields.io/badge/Recoil-3578E5?style=flat-square&logo=React&logoColor=white"/>
+</p>
+
+###### Style
+
+<p>
+    <img src="https://img.shields.io/badge/styled components-DB7093?style=flat-square&logo=styled-components&logoColor=white"/>
+    <img src="https://img.shields.io/badge/Material UI-0081CB?style=flat-square&logo=Material-UI&logoColor=white"/>
+</p>
+
+###### IDE
+
+<p>
+    <img src="https://img.shields.io/badge/Visual Studio Code-007ACC?style=flat-square&logo=VisualStudioCode&logoColor=white"/>
+</p>
+
+### ⚙️Back-end
+
+<p>
+<img src="https://img.shields.io/badge/Java-	FFA01E?style=flat-square&logo=Java&logoColor=white"/>
+<img src="https://img.shields.io/badge/Spring Boot-6DB33F?style=flat-square&logo=springboot&logoColor=white"/>
+</p>
+
+###### DB
+
+<p>
+    <img src="https://img.shields.io/badge/MySQL-4479A1?style=flat-square&logo=mysql&logoColor=white"/>
+</p>
+
+###### Infra
+
+<p>
+    <img src="https://img.shields.io/badge/Amazon AWS-232F3E?style=flat-square&logo=amazon AWS&logoColor=white"/>
+    <img src="https://img.shields.io/badge/NGINX-009639?style=flat-square&logo=NGINX&logoColor=white"/>
+    <img src="https://img.shields.io/badge/Ubuntu-E95420?style=flat-square&logo=Ubuntu&logoColor=white"/>
+</p>
+
+###### IDE
+
+<p>
+    <img src="https://img.shields.io/badge/IntelliJ IDEA-000000?style=flat-square&logo=IntelliJ IDEA&logoColor=white"/>
+</p>
+
+### 📱iOS
+
+## 문서 모음
+
+#### Mock API
+
+[Mock API Docs 바로가기](https://documenter.getpostman.com/view/8052286/TzY7eZkt)
+
+#### DB 설계
+
+<img src="https://i.imgur.com/q936hWW.png" width=500/><br/>
+
+#### Common
+
+- [브랜치 전략](https://github.com/malaheaven/issue-tracker/wiki/%EB%B8%8C%EB%9E%9C%EC%B9%98-%EC%A0%84%EB%9E%B5)
 - [Swagger API 사용방법](https://github.com/malaheaven/issue-tracker/wiki/swagger-api-%EC%82%AC%EC%9A%A9%EB%B0%A9%EB%B2%95)
-
-https://user-images.githubusercontent.com/33610315/122526809-a856f200-d055-11eb-8163-4a9bd9886f46.mp4
-
-
-![ezgif com-gif-maker (1)](https://user-images.githubusercontent.com/64049682/122515094-e6e5b000-d047-11eb-9a00-a2ecfafc8f66.gif)
-
-
-
-## team11
-
-팀 소개: 슬기로운 아픈 생활 😵 🤒 아픔을 웃을 수 있는 우리는 일류다!  
-팀원 : Robin, Tree, Rano, Json, Hong, ZG
-
-[브랜치 전략](https://github.com/malaheaven/issue-tracker/wiki/%EB%B8%8C%EB%9E%9C%EC%B9%98-%EC%A0%84%EB%9E%B5)    
-
-## BE
-[API docs](https://documenter.getpostman.com/view/8052286/TzY7eZkt)   
-
-ROBIN: 마라탕 먹는 사람  
-TREE: 죽다 살아난 사람
-
-## FE
-[데모 영상](https://github.com/malaheaven/issue-tracker/tree/dev-FE)    
-
-RANO: 노트북이 아픈 사람   
-JSON: 아픈사람 11111111
-
-
-## IOS
-[데모 영상](https://github.com/malaheaven/issue-tracker/tree/dev-iOS)     
-
-HONG: 그냥 아픈 사람 2.5555555555555 +_+   
-ZG: 아픈사람 2222222222
-
-
-
-

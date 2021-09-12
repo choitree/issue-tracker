@@ -70,7 +70,7 @@ class IssueTrackerTests: XCTestCase {
         NetworkManager.requestLocal(with: requestable, type: Issues.self) { result in
             switch result {
             case .success(let data):
-                XCTAssertEqual(data.issues[0].issueId, 0)
+                XCTAssertEqual(data.issues[0].issueId, 1)
                 promise.fulfill()
             case .failure(_):
                 XCTFail("네트워크 접속 오류")
@@ -79,7 +79,7 @@ class IssueTrackerTests: XCTestCase {
         wait(for: [promise], timeout: 3)
     }
     
-    func test_네트워크_통신_테스트() throws {
+    func test네트워크URL_주입결과() throws {
         // given
         let sessionManager = SessionManagerStub()
         let requestable = APIEndPoint.init(path: "/endpoint", httpMethod: .get, decodingStrategy: .convertFromSnakeCase)

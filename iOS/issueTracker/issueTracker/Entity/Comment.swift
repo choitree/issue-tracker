@@ -8,7 +8,17 @@
 import Foundation
 
 struct Comment: Codable, Equatable {
-    var authorId: Int
-    var authorName: String
+    var author: User
+    var commentId: Int
     var contents: String
+    var createDateTime: String
+    
+    static let empty = Self()
+    
+    init() {
+        author = User.empty
+        commentId = 0
+        contents = ""
+        createDateTime = ""
+    }
 }

@@ -10,14 +10,14 @@ import Foundation
 struct Histroy: Codable, Equatable {
     
     var userName: String
-    var historyDatetime: String
+    var historyDateTime: String
     var flag: String
     
     static let empty = Self()
     
     init() {
         self.userName = ""
-        self.historyDatetime = ""
+        self.historyDateTime = ""
         self.flag = ""
     }
 }

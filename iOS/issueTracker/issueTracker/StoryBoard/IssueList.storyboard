@@ -21,14 +21,14 @@
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="issueCell" id="Ar2-Q1-fBS" customClass="IssueTableViewCell" customModule="issueTracker" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="24.5" width="414" height="213"/>
+                                        <rect key="frame" x="0.0" y="24.5" width="414" height="236"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Ar2-Q1-fBS" id="5HE-ed-Bgc">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="213"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="236"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="UaT-BY-Jrm">
-                                                    <rect key="frame" x="0.0" y="0.0" width="414" height="213"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="414" height="236"/>
                                                     <subviews>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ckw-BQ-7fv">
                                                             <rect key="frame" x="0.0" y="0.0" width="414" height="50"/>
@@ -48,10 +48,10 @@
                                                             </constraints>
                                                         </view>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JR7-G6-67J">
-                                                            <rect key="frame" x="0.0" y="50" width="414" height="63"/>
+                                                            <rect key="frame" x="0.0" y="50" width="414" height="86"/>
                                                             <subviews>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ㅇㅁㄴ어항너마ㅣ;ㄴ어라ㅣ;ㄴㅇ머리ㅏㄴ어리;ㅏㄴ어라ㅣ머이ㅏㄹ멍나ㅣ런아ㅣ럼ㄴ아ㅣㄹ먼아ㅣㄹ" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Ev-fi-aKh">
-                                                                    <rect key="frame" x="16" y="11" width="382" height="41"/>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="몇줄까지나오나테스트해봐요~ 몇줄까지나오나테스트해봐요~ 몇줄까지나오나테스트해봐요~ 몇줄까지나오나테스트해봐요~ " textAlignment="natural" lineBreakMode="characterWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Ev-fi-aKh">
+                                                                    <rect key="frame" x="16" y="22.5" width="382" height="41"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="20.5" id="YJx-O0-IPd"/>
                                                                     </constraints>
@@ -69,7 +69,7 @@
                                                             </constraints>
                                                         </view>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6qm-rY-BVm">
-                                                            <rect key="frame" x="0.0" y="113" width="414" height="50"/>
+                                                            <rect key="frame" x="0.0" y="136" width="414" height="50"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="마일스톤 이름" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="glx-JK-IWV">
                                                                     <rect key="frame" x="37" y="15" width="93" height="20.5"/>
@@ -91,7 +91,7 @@
                                                             </constraints>
                                                         </view>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Gni-cn-4AV">
-                                                            <rect key="frame" x="0.0" y="163" width="414" height="50"/>
+                                                            <rect key="frame" x="0.0" y="186" width="414" height="50"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="레이블 이름" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aS3-vA-DQF">
                                                                     <rect key="frame" x="16" y="10" width="114" height="30"/>
@@ -247,11 +247,11 @@
             </objects>
             <point key="canvasLocation" x="2939.130434782609" y="87.723214285714278"/>
         </scene>
-        <!--Item-->
+        <!--이슈-->
         <scene sceneID="e2h-91-QKp">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Gor-bV-PBW" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item" id="vye-Ew-6jF"/>
+                    <tabBarItem key="tabBarItem" title="이슈" image="tray.full" catalog="system" id="vye-Ew-6jF"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="t9S-zc-FK7">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
@@ -274,7 +274,7 @@
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="i9a-f9-tUY" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2455.7971014492755" y="-23.4375"/>
+            <point key="canvasLocation" x="2444" y="283"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="M8I-7H-qcH">
@@ -297,11 +297,11 @@
             </objects>
             <point key="canvasLocation" x="-126" y="1143"/>
         </scene>
-        <!--Item-->
+        <!--레이블-->
         <scene sceneID="lox-uZ-6TZ">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="ccu-70-shB" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item" id="qUd-oy-wyq"/>
+                    <tabBarItem key="tabBarItem" title="레이블" image="tag" catalog="system" selectedImage="tag.fill" id="qUd-oy-wyq"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="u1R-Da-T4a">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
@@ -326,11 +326,11 @@
             </objects>
             <point key="canvasLocation" x="1909" y="811"/>
         </scene>
-        <!--Item-->
+        <!--마일스톤-->
         <scene sceneID="Gzo-dy-l3g">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="AEH-KS-mha" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item" id="sLj-SS-hMJ"/>
+                    <tabBarItem key="tabBarItem" title="마일스톤" image="rectangle.and.paperclip" catalog="system" selectedImage="rectangle.topthird.inset" id="sLj-SS-hMJ"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="M2y-sg-JtQ">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
@@ -345,11 +345,11 @@
             </objects>
             <point key="canvasLocation" x="996" y="1484"/>
         </scene>
-        <!--Item-->
+        <!--계정-->
         <scene sceneID="vSv-Aa-KDg">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="kPa-Vv-bNy" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item" id="6gm-NW-ueV"/>
+                    <tabBarItem key="tabBarItem" title="계정" image="person.crop.circle" catalog="system" id="6gm-NW-ueV"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="ZYk-en-inH">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
@@ -389,7 +389,13 @@
         <image name="archivebox" catalog="system" width="128" height="106"/>
         <image name="checkmark" catalog="system" width="128" height="114"/>
         <image name="milestoneIcon" width="17" height="18"/>
+        <image name="person.crop.circle" catalog="system" width="128" height="121"/>
         <image name="plus" catalog="system" width="128" height="113"/>
+        <image name="rectangle.and.paperclip" catalog="system" width="128" height="99"/>
+        <image name="rectangle.topthird.inset" catalog="system" width="128" height="93"/>
+        <image name="tag" catalog="system" width="128" height="119"/>
+        <image name="tag.fill" catalog="system" width="128" height="119"/>
+        <image name="tray.full" catalog="system" width="128" height="88"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

@@ -42,8 +42,6 @@ const LoginCallBackPage = ({ history }: RouteComponentProps) => {
       body: JSON.stringify({ code }),
     });
     const json = await data.json();
-    console.log(json);
-
     const { token, id, name, email, profileImage } = createUserInfo(json);
 
     setUserDataState({ token, id, name, email, profileImage });

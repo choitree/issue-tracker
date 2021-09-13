@@ -39,5 +39,13 @@ const authHeadersAtom = atom<IAuthHeaders>({
   },
 });
 
-export { userDataAtom, authHeadersAtom };
+// 3. 재요청 판단용 Atom
+type TRefetch = "" | "labels" | "milestones" | "users" | "issues";
+const refetchAtom = atom<TRefetch>({
+  key: 'refetchAtom',
+  default: "",
+});
+
+
+export { userDataAtom, authHeadersAtom, refetchAtom };
 export type { IUserData };

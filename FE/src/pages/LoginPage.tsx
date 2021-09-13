@@ -9,7 +9,6 @@ const LoginPage = () => {
 
   const GITHUB_URL = process.env.REACT_APP_GITHUB_URL;
 
-
   return (
     <LoginLayout>
       <LoginContentLayout>
@@ -21,10 +20,16 @@ const LoginPage = () => {
 
         {/* Local Login : 비활성 / 로컬 로그인 기능이 있다면 활성! */}
         <InputLayout type="text" placeholder={placeHolder.id} readOnly />
-        <InputLayout type="password" placeholder={placeHolder.password} readOnly />
+        <InputLayout
+          type="password"
+          placeholder={placeHolder.password}
+          readOnly
+        />
         <LoginButtonLayout btnStyle="medium" disabled>{id}</LoginButtonLayout>
         <RegisterLinkStyle>
-          <Link to="/register" onClick={(e) => e.preventDefault()}>{register}</Link>
+          <Link to="/register" onClick={(e) => e.preventDefault()}>
+            {register}
+          </Link>
         </RegisterLinkStyle>
       </LoginContentLayout>
     </LoginLayout>
@@ -105,6 +110,8 @@ const RegisterLinkStyle = styled.div`
     font-size: 0.75rem;
     font-weight: ${({ theme }) => theme.fontWeight.bold};
     text-decoration: none;
+
+    cursor: not-allowed;
   }
 `;
 

@@ -84,8 +84,7 @@ function useFetch<T>({ url, options, deps = [], checkBeforeFetchExecute } : Iuse
 
   useEffect(() => {
     if (deps.length > 0) {
-      let isExecute = deps.findIndex((dep) => !dep) <= -1;
-
+      let isExecute = !(deps.some((dep) => !dep));
       if (prevDeps.length === 0) setPrevDeps(deps);
       else isExecute = isExecute && deps.some((dep, idx) => prevDeps[idx] !== dep);
 

@@ -35,14 +35,15 @@ const filterSelectionAtom = atom<TFilterSelection>({
     label: [],
     milestone: [],
     writer: [],
-  }
+  },
 });
 
 // 2-1) filterSelectionAtom - search: 열린 이슈(id: 1) or 닫힌 이슈(id: 5) 만 있다면 초기 상태 판정.
 const isInitFilterSelectionSelector = selector({
   key: 'isInitFilterSelectionSelector',
   get: ({ get }) => {
-    const RECOIL_OPEN_ISSUE = 1, RECOIL_CLOSE_ISSUE = 5;
+    const RECOIL_OPEN_ISSUE = 1;
+    const RECOIL_CLOSE_ISSUE = 5;
     const filterSelectionState = get(filterSelectionAtom);
     const { assignee, label, milestone, search, writer } = filterSelectionState;
 
@@ -50,11 +51,9 @@ const isInitFilterSelectionSelector = selector({
     if (!assignee.length && !label.length && !milestone.length && !writer.length && isOpenOrClose) 
       return true;
 
-    return false
+    return false;
   },
 });
-
-
 
 // 3) 체크된 이슈의 id 저장용
 const idOfCheckedIssuesAtom = atom<number[]>({
@@ -70,10 +69,10 @@ const idOfCheckedIssuesAtom = atom<number[]>({
 type TIssuePageData = {
   isLoading: boolean;
   data: {
-    labels?: ILabelsInfo,
-    milestones?: IMilestonesInfo,
-    users?: IUsersInfo,
-    issues?: IIssuesInfo
+    labels?: ILabelsInfo;
+    milestones?: IMilestonesInfo;
+    users?: IUsersInfo;
+    issues?: IIssuesInfo;
   };
 };
 
@@ -85,22 +84,21 @@ const issuesAllDataAtom = atom<TIssuePageData>({
       issues: undefined,
       milestones: undefined,
       labels: undefined,
-      users: undefined
-    }
-  }
+      users: undefined,
+    },
+  },
 });
 
-// issuesAllDataAtom이 초기 상태인지 확인
+// issuesAllDataAtom이 초기 상태인지 확인 (사용안함)
 const isInitIssuesAllDataSelector = selector({
   key: 'isInitIssuesAllDataSelector',
   get: ({ get }) => {
     const issuesAllDataState = get(issuesAllDataAtom);
     const isIssuesAllDataEmpty = Object.values(issuesAllDataState.data).every((v) => !v);
-    const result = (issuesAllDataState.isLoading && isIssuesAllDataEmpty);
+    const result = issuesAllDataState.isLoading && isIssuesAllDataEmpty;
     return result;
   },
 });
-
 
 export {
   filterVisibleAtom,
@@ -108,6 +106,5 @@ export {
   isInitFilterSelectionSelector,
   idOfCheckedIssuesAtom,
   issuesAllDataAtom,
-  isInitIssuesAllDataSelector,
 };
 export type { IFilterVisible, TFilterSelection };

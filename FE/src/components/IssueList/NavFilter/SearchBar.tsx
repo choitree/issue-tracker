@@ -8,8 +8,10 @@ import { ExpandMore } from '@material-ui/icons';
 import { TextIssueList, TextIssueListFilterMock } from 'util/reference';
 import ListFilterModal from '../ListFilterModal';
 
-const SearchBar = ({ handleFilterModalClick } : IIssueListChildren) => {
-  const { filter: { caption, placeHolder } } = TextIssueList;
+const SearchBar = ({ handleFilterModalClick }: IIssueListChildren) => {
+  const {
+    filter: { caption, placeHolder },
+  } = TextIssueList;
   const { search: searchData } = TextIssueListFilterMock;
 
   const [filterVisibleState] = useRecoilState(filterVisibleAtom);
@@ -17,11 +19,14 @@ const SearchBar = ({ handleFilterModalClick } : IIssueListChildren) => {
   return (
     <SearchBarLayout>
       <SearchBarRow>
-        <FilterButton id="modalBtn" onClick={() => handleFilterModalClick('search')}>
+        <FilterButton
+          id="modalBtn"
+          onClick={() => handleFilterModalClick('search')}
+        >
           <span className="caption">{caption}</span>
           <ExpandMore />
         </FilterButton>
-        <FilterInput disableUnderline placeholder={placeHolder} />
+        <FilterInput readOnly disableUnderline placeholder={placeHolder} />
       </SearchBarRow>
 
       {filterVisibleState.search && (
@@ -46,10 +51,10 @@ const SearchBarLayout = styled.div`
   border-radius: 1.1rem;
 `;
 
-const SearchBarRow = styled.div<{width?: number}>`
+const SearchBarRow = styled.div<{ width?: number }>`
   position: relative;
   display: flex;
-  width: ${({width}) => width ? `${width}px` : `100%`};
+  width: ${({ width }) => (width ? `${width}px` : `100%`)};
   height: 100%;
 `;
 
@@ -76,4 +81,8 @@ const FilterInput = styled(Input)`
 
   background-color: ${({ theme }) => theme.colors.grayScale.inputBgColor};
   border-radius: 0px 1.1rem 1.1rem 0px;
+
+  input.MuiInput-input {
+    cursor: default;
+  }
 `;

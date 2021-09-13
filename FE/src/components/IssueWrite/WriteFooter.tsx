@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import styled from 'styled-components';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
-import { authHeadersAtom, isDataSubmitAtom, isPossibleSubmitSelector, writeDataAtom } from 'util/store';
+import { authHeadersAtom, isDataSubmitAtom, isPossibleSubmitSelector, writeDataAtom, refetchAtom } from 'util/store';
 import { createFetchOptions, IFetchOptions, useFetch } from 'util/hooks';
 import { createRequestAddress } from 'util/API';
 
@@ -18,6 +18,7 @@ const WriteFooter = ({ ...props }) => {
   const setIsDataSubmit = useSetRecoilState(isDataSubmitAtom);
   const authHeadersState = useRecoilValue(authHeadersAtom);
   const [issueWriteFetchOptions, setIssueWriteFetchOptions] = useState<IFetchOptions | undefined>();
+  const setRefetchState = useSetRecoilState(refetchAtom);
 
   // 2. useFetch & useEffect
   const useFetchParams = useMemo(() => ({ options: issueWriteFetchOptions, deps: [isSubmit]}), [issueWriteFetchOptions]);
@@ -29,7 +30,8 @@ const WriteFooter = ({ ...props }) => {
     if (JSON.stringify(writeResult).indexOf("OK") <= -1) return;
     setIsSubmit(false);
     setIsDataSubmit(true);
-    history.push('/issues'); // push하고나서..데이터 못가져옴
+    setRefetchState('issues');
+    history.push('/issues');
   }, [writeResult]);
 
   // 3. events

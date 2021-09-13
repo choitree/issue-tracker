@@ -1,11 +1,10 @@
-import { userDataAtom, authHeadersAtom, IUserData } from './global';
+import { userDataAtom, authHeadersAtom, refetchAtom, IUserData } from './global';
 import {
   filterVisibleAtom,
   filterSelectionAtom,
   isInitFilterSelectionSelector,
   idOfCheckedIssuesAtom,
   issuesAllDataAtom,
-  isInitIssuesAllDataSelector,
   IFilterVisible,
   TFilterSelection,
 } from './issueList';
@@ -28,7 +27,7 @@ export {
   isInitFilterSelectionSelector,
   idOfCheckedIssuesAtom,
   issuesAllDataAtom,
-  isInitIssuesAllDataSelector,
+  refetchAtom,
   // issueWrite
   writeDataAtom,
   isInitWriteDataSelector,

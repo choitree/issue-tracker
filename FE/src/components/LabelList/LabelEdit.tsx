@@ -6,6 +6,8 @@ import CloseICon from '@material-ui/icons/Close';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { ILabel } from '../../pages/LabelListPage';
 import { createGetRequestAddress } from 'util/API';
+import { refetchAtom } from 'util/store';
+import { useSetRecoilState } from 'recoil';
 
 interface IlabelTitle {
   color: string;
@@ -43,6 +45,7 @@ export const LabelEdit = ({
       bgColor: '#ffffff',
     },
   );
+  const setRefetchState = useSetRecoilState(refetchAtom);
 
   const handleBgColor = (e: React.FormEvent<HTMLInputElement>) => {
     const target = e.target as HTMLInputElement;
@@ -102,6 +105,7 @@ export const LabelEdit = ({
       console.error(e);
     } finally {
       setToggleEdit(false);
+      setRefetchState("labels");
     }
   };
 

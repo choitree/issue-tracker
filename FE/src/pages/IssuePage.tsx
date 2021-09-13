@@ -4,7 +4,6 @@ import useRefreshAPIDataState from 'util/hooks/useRefreshAPIDataState';
 
 const IssuePage = () => {
   const { data, isLoading } = useRefreshAPIDataState();
-
   return !isLoading ? (
     <IssueList data={data} />
   ) : (

@@ -1,14 +1,14 @@
-import { useEffect, useMemo, useState } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { createGetRequestAddress } from "util/API";
-import { authHeadersAtom, isInitIssuesAllDataSelector, issuesAllDataAtom } from "util/store";
+import { useEffect, useMemo, useState } from 'react';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { createGetRequestAddress } from 'util/API';
+import { authHeadersAtom, issuesAllDataAtom, refetchAtom } from 'util/store';
 import { IIssuesInfo, ILabelsInfo, IMilestonesInfo, IUsersInfo } from "util/types";
-import useFetch, { createFetchOptions, IFetchOptions } from "./useFetch";
+import useFetch, { createFetchOptions, IFetchOptions } from './useFetch';
 
-function useRefreshAPIDataState () {
+function useRefreshAPIDataState() {
   // 1. 일반
   const [issuesAllDataState, setIssuesAllDataState] = useRecoilState(issuesAllDataAtom);
-  const isInitIssuesAllDataState = useRecoilValue(isInitIssuesAllDataSelector);
+  const [refetchState, setRefetchState] = useRecoilState(refetchAtom);
   const authHeadersState = useRecoilValue(authHeadersAtom);
   const [issuePagefetchOptions, setIssuePageFetchOptions] = useState<IFetchOptions | undefined>();
 
@@ -20,25 +20,32 @@ function useRefreshAPIDataState () {
     );
   }, [authHeadersState]);
 
-  const useFetchParams = useMemo(
-    () => ({
+  // 데이터 재요청이 발생하면 이미 저장되어 있던 데이터 중 요청 데이터만 초기화 -> 이후엔 useFetch에서 다시 불러옴
+  useEffect(() => {
+    if (!refetchState) return;
+    setIssuesAllDataState((state) => ({ ...state, data: { ...state.data, [refetchState]: undefined } }));
+    setRefetchState("");
+  }, [refetchState]);
+
+  const useFetchParams = useMemo(() => {
+    const isSomeDataNull = (Object.values(issuesAllDataState.data).some((v) => !v));
+    return {
       options: issuePagefetchOptions,
-      deps: [issuePagefetchOptions, isInitIssuesAllDataState],  // dependency
-    }),
-    [issuePagefetchOptions, isInitIssuesAllDataState],
-  );
+      deps: [issuePagefetchOptions, isSomeDataNull], // dependency
+    };
+  }, [issuePagefetchOptions, issuesAllDataState]);
 
   const { result: labelsResult, fetchState: { isLoading: labelsIsLoading } }
-    = useFetch<ILabelsInfo>({...useFetchParams, url: createGetRequestAddress("labels")});
+    = useFetch<ILabelsInfo>({...useFetchParams, url: createGetRequestAddress('labels')});
   const { result: milestonesResult, fetchState: { isLoading: milestonesIsLoading } }
-    = useFetch<IMilestonesInfo>({...useFetchParams, url: createGetRequestAddress("milestones")});
+    = useFetch<IMilestonesInfo>({ ...useFetchParams, url: createGetRequestAddress('milestones')});
   const { result: usersResult, fetchState: { isLoading: usersIsLoading } }
-    = useFetch<IUsersInfo>({...useFetchParams, url: createGetRequestAddress("users")});
+    = useFetch<IUsersInfo>({ ...useFetchParams, url: createGetRequestAddress('users') });
   const { result: issuesResult, fetchState: { isLoading: issuesIsLoading } }
-    = useFetch<IIssuesInfo>({...useFetchParams, url: createGetRequestAddress("issues")});
+    = useFetch<IIssuesInfo>({ ...useFetchParams, url: createGetRequestAddress('issues')});
 
   useEffect(() => {
-    const arrLoading = [issuesIsLoading, milestonesIsLoading, labelsIsLoading, usersIsLoading];
+    const arrLoading = [ issuesIsLoading, milestonesIsLoading, labelsIsLoading, usersIsLoading ];
     if (arrLoading.some((loading) => loading)) return;
 
     setIssuesAllDataState({
@@ -51,7 +58,6 @@ function useRefreshAPIDataState () {
       },
     });
   }, [issuesIsLoading, milestonesIsLoading, labelsIsLoading, usersIsLoading]);
-
 
   return issuesAllDataState;
 }

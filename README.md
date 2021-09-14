@@ -1,10 +1,22 @@
 # issue tracker
 
-<!-- 이슈 리스트 이미지 (FE) -->
+## 👾 데모
 
-### 데모
+**[1] 웹**
 
-<img src="https://user-images.githubusercontent.com/64049682/122515094-e6e5b000-d047-11eb-9a00-a2ecfafc8f66.gif" alt="iOS" width="300" /><br/>
+- 이슈 필터 (+ 로그인 & 로그아웃)  
+  <img src="https://user-images.githubusercontent.com/33610315/133200669-19d130cd-f18e-42b4-b48d-47eaaa8d22fc.gif" width=600 />
+
+- 이슈 작성  
+  <img src="https://user-images.githubusercontent.com/33610315/133200608-23757678-112f-4b91-9257-426295c62653.gif" width=600 />
+
+- 라벨 생성 및 수정  
+  <img src="https://user-images.githubusercontent.com/33610315/133200998-ced0ecaf-3883-4352-8f1e-b1abe67cb4b0.gif" width=600/><br/>
+
+**[2] 모바일**
+
+- ALL  
+   <img src="https://user-images.githubusercontent.com/64049682/122515094-e6e5b000-d047-11eb-9a00-a2ecfafc8f66.gif" alt="iOS" width="300" /><br/>
 
 ## 🤼 팀원 구성
 

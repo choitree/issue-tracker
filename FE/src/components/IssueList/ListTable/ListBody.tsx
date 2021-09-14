@@ -1,10 +1,9 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import styled, { css } from 'styled-components';
 import { useRecoilState, useRecoilValue } from 'recoil';
 
 import { IIssueList } from '..';
-import { IIssuesInfo } from 'util/types';
-import { filterSelectionAtom, idOfCheckedIssuesAtom, userDataAtom } from 'util/store';
+import { filterSelectionAtom, checkedIssueIdsAtom, userDataAtom, currentViewIssuesAtom } from 'util/store';
 import {
   pipe,
   isZeroFilterSelection,
@@ -16,6 +15,7 @@ import {
   getIssueHistoryFlagText,
 
   RECOIL_OPEN_ISSUE,
+  RECOIL_CLOSE_ISSUE,
   calcPastTime,
 } from 'util/util';
 
@@ -23,14 +23,14 @@ import { Checkbox } from '@material-ui/core';
 import { IconAlertCircle, IconArchive, IconMileStone } from '../../Common/Icons';
 import { FaHashtag } from 'react-icons/fa';
 import Label from '../../Common/Label';
+import { IIssue } from 'util/types';
 
 const ListBody = ({ data, ...props }: IIssueList) => {
   // 1. 일반
   const [filterSelectionState, setFilterSelectionState] = useRecoilState(filterSelectionAtom);
-  const [idOfCheckedIssuesState, setIdOfCheckedIssuesState] = useRecoilState(idOfCheckedIssuesAtom);
+  const [checkedIssueIdsState, setCheckedIssueIdsState] = useRecoilState(checkedIssueIdsAtom);
+  const [currentViewIssuesState, setCurrentViewIssuesState] = useRecoilState(currentViewIssuesAtom);
   const userDataState = useRecoilValue(userDataAtom);
-
-  const [issues, setIssues] = useState<IIssuesInfo>();
 
   // 2. useEffect
   // 초기 렌더링엔 Open된 이슈만 보이게 (filterSelectionState 업뎃)
@@ -39,34 +39,42 @@ const ListBody = ({ data, ...props }: IIssueList) => {
   // ListBody에서 필터링 실행함 (SearchBar 컴포넌트에서 필터버튼 눌러도 여기서!)
   useEffect(() => {
     if (!data || !data.issues) return;
-    let arrIssues = data.issues.issues;
+    const arrIssues = data.issues.issues;
+    const createCurrentViewIssuesInfo = (arrIssues : IIssue[]) => ({
+      viewIssues: getFilterSearchData(filterSelectionState["search"], Number(userDataState.id))(arrIssues),
+      openIssues: getFilterSearchData([RECOIL_OPEN_ISSUE], Number(userDataState.id))(arrIssues),
+      closeIssues: getFilterSearchData([RECOIL_CLOSE_ISSUE], Number(userDataState.id))(arrIssues),
+    });
+    let currentViewIssuesInfo = createCurrentViewIssuesInfo(arrIssues);
 
     if (!isZeroFilterSelection(filterSelectionState)) {
-      arrIssues = pipe(
+      const arrFilterIssues = pipe(
         getFilterLabelData(filterSelectionState['label']),
         getFilterMilestoneData(filterSelectionState['milestone']),
         getFilterAssigneeData(filterSelectionState["assignee"]),
         getFilterWriterData(filterSelectionState["writer"]),
-        getFilterSearchData(filterSelectionState["search"], Number(userDataState.id))
       )(arrIssues);
+      currentViewIssuesInfo = createCurrentViewIssuesInfo(arrFilterIssues);
     }
 
-    setIssues({ issues: arrIssues });
+    const { viewIssues, openIssues, closeIssues } = currentViewIssuesInfo;
+    setCurrentViewIssuesState((state) => ({ ...state, viewIssues, openIssues, closeIssues }));
   }, [data?.issues, filterSelectionState]);
 
   // 3. Events
   const handleIssueCheckboxClick = useCallback((e : React.MouseEvent | Event) => {
     const target = e.target as HTMLInputElement;
-    target.checked
-      ? setIdOfCheckedIssuesState(idOfCheckedIssuesState.concat(Number(target.id)))
-      : setIdOfCheckedIssuesState(idOfCheckedIssuesState.filter((id) => id !== Number(target.id)));
-  }, [idOfCheckedIssuesState]);
+    setCheckedIssueIdsState((state) => ({
+      ...state,
+      current: target.checked ? state.current.concat(Number(target.id)) : state.current.filter((id) => id !== Number(target.id)),
+    }));
+  }, [checkedIssueIdsState]);
 
 
   return (
     <ListBodyLayout {...props}>
-      {issues && issues.issues.length > 0 ? (
-        issues.issues.map((issue) => (
+      {currentViewIssuesState?.viewIssues.length > 0 ? (
+        currentViewIssuesState.viewIssues.map((issue) => (
           <ListBodyRow key={issue.issueId}>
             {/* 좌측 */}
             <ListBodyBlock>
@@ -74,7 +82,7 @@ const ListBody = ({ data, ...props }: IIssueList) => {
                 color="primary"
                 id={`${issue.issueId}`}
                 onClick={handleIssueCheckboxClick}
-                checked={idOfCheckedIssuesState.includes(issue.issueId)}
+                checked={checkedIssueIdsState.current.includes(issue.issueId)}
               />
               <TitleInfoBlock>
                 <TitleBlock>

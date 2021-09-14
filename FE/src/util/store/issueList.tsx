@@ -1,6 +1,6 @@
 // issueList (IssuePage)
 import { atom, selector } from 'recoil';
-import { ILabelsInfo, IMilestonesInfo, IUsersInfo, IIssuesInfo, TFilterTypes } from 'util/types';
+import { ILabelsInfo, IMilestonesInfo, IUsersInfo, IIssuesInfo, TFilterTypes, IIssue } from 'util/types';
 
 // 1. Modal 관련
 // 1) ListModal(Filter 모달) Visible 상태
@@ -56,10 +56,20 @@ const isInitFilterSelectionSelector = selector({
 });
 
 // 3) 체크된 이슈의 id 저장용
-const idOfCheckedIssuesAtom = atom<number[]>({
-  key: 'idOfCheckedIssuesAtom',
-  default: [],
+
+type TCheckedIssueIds = { current: number[]; all: number[] };
+const checkedIssueIdsAtom = atom<TCheckedIssueIds>({
+  key: 'checkedIssueIdsAtom',
+  default: { all: [], current: [] },
 });
+
+// 3-1) 현재 보여지고 있는 이슈들
+type TCurrentViewIssues = { viewIssues: IIssue[], openIssues: IIssue[], closeIssues: IIssue[] };
+const currentViewIssuesAtom = atom<TCurrentViewIssues>({
+  key: 'currentViewIssuesAtom',
+  default: { viewIssues: [], openIssues: [], closeIssues: [] },
+});
+
 
 // ===========
 
@@ -104,7 +114,8 @@ export {
   filterVisibleAtom,
   filterSelectionAtom,
   isInitFilterSelectionSelector,
-  idOfCheckedIssuesAtom,
+  checkedIssueIdsAtom,
+  currentViewIssuesAtom,
   issuesAllDataAtom,
 };
 export type { IFilterVisible, TFilterSelection };
